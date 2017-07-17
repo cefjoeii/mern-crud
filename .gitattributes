@@ -1,0 +1,37 @@
+# Declare files that will always have LF line endings on checkout.
+
+*.html text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.svg text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+
+.babelrc text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+LICENSE text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.ai binary
+*.psd binary
+*.pdf binary
+
+*.otf binary
+*.eot binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.zip binary
+*.rar binary

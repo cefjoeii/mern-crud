@@ -29,7 +29,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 // Remove this on the production
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
 app.use('/api/users', require('./routes/users'));
 
 // Use express's default error handling middleware
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }

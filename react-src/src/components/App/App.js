@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import TableData from '../Table/Table';
+import { Container } from 'semantic-ui-react';
+import TableData from '../TableData/TableData';
+import ModalAdd from '../ModalAdd/ModalAdd';
 
 import logo from '../../logo.svg';
 import './App.css';
 
 class App extends Component {
+
+  // Pass this as a property
+  server = 'http://localhost:3000'; // http://localhost:3000
+
   render() {
     return (
       <div>
@@ -14,7 +20,10 @@ class App extends Component {
             <h2>MERN CRUD Starter Kit</h2>
           </div>
         </div>
-        <TableData />
+        <Container>
+          <ModalAdd server={this.server} />
+          <TableData />
+        </Container>
       </div>
     );
   }

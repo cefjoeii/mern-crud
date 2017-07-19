@@ -2,12 +2,40 @@
 
 A CRUD starter kit using MongoDB, Express.js, React.js, and Node.js. Semantic UI React was used as I'm opinionatedly not pleased with Material-UI.
 
-Install dependencies.
+Make sure MongoDB service is running.
+
+<br>
+
+For the **back-end**, install the dependencies once.
+```
+npm install
+```
+Run the server.
+```
+npm start
+``` 
+
+<br>
+
+For the **front-end**, go to *react-src* folder via the terminal.
+
+```
+cd react-src
+```
+
+Install the node packages required by React once.
 ```
 npm install
 ```
 
-Run.
+Run the development server for React.
 ```
 npm start
 ```
+
+For production build, simply run on *react-src* folder.
+```
+npm run build
+```
+
+It will create a folder named *public* on the root directory. This is where the production-ready front-end of the web application will reside.

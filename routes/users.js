@@ -3,6 +3,12 @@ const router = express.Router();
 const config = require('../config/db');
 const User = require('../models/user');
 
+router.get('/', (req, res) => {
+  User.find({}).then((data) => {
+    res.json(data);
+  });
+});
+
 router.post('/', (req, res) => {
 
   let newUser = new User({
@@ -12,7 +18,7 @@ router.post('/', (req, res) => {
     gender: req.body.gender
   });
 
-  newUser.save((err) => {
+  newUser.save((err, addedUser) => {
 
     if(err) {
       if (err.errors) {
@@ -43,7 +49,17 @@ router.post('/', (req, res) => {
     }
 
     else {
-      res.json({ success: true, msg: 'User successfully registered.' });
+      res.json({
+        success: true,
+        msg: 'Successfully added!',
+        addedUser: {
+          _id: addedUser._id,
+          name: addedUser.name,
+          email: addedUser.email,
+          age: addedUser.age,
+          gender: addedUser.gender
+        }
+      });
     }
   });
 });

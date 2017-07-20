@@ -33,9 +33,20 @@ Run the development server for React.
 npm start
 ```
 
-For production build, simply run on *react-src* folder.
+To make a production build, simply run on *react-src* folder.
 ```
 npm run build
 ```
 
 It will create a folder named *public* on the root directory. This is where the production-ready front-end of the web application will reside.
+
+## Features You Can Manually Add
+
+* Front-end validation. Pure back-end validation is expensive.
+
+## To Do
+
+- [x] Create
+- [x] Read
+- [ ] Update
+- [ ] Delete

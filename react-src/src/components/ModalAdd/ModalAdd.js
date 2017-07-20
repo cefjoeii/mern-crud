@@ -23,12 +23,12 @@ class ModalFormAdd extends Component {
       <div>
         <Button onClick={this.show('tiny')} positive>Add New</Button>
 
-        <Modal size={size} open={open} onClose={this.close}>
+        <Modal size={size} open={open} onClose={this.close} closeIcon='close'>
           <Modal.Header>
             Add User
           </Modal.Header>
           <Modal.Content>
-            <FormAdd server={this.props.server} />
+            <FormAdd onUsersListChange={this.props.onUsersListChange} server={this.props.server} />
           </Modal.Content>
         </Modal>
       </div>

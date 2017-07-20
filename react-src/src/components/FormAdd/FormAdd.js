@@ -3,8 +3,8 @@ import { Message, Button, Form, Select } from 'semantic-ui-react';
 import axios from 'axios';
 
 const genderOptions = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
+  { key: 'm', text: 'Male', value: 'm' },
+  { key: 'f', text: 'Female', value: 'f' },
 ]
 
 class FormAdd extends Component {
@@ -17,6 +17,7 @@ class FormAdd extends Component {
       age: '',
       gender: '',
       formClassName: '',
+      formSuccessMessage: '',
       formErrorMessage: ''
     }
 
@@ -40,7 +41,7 @@ class FormAdd extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    let newUser = {
+    const newUser = {
       name: this.state.name,
       email: this.state.email,
       age: parseInt(this.state.age, 10),
@@ -53,14 +54,16 @@ class FormAdd extends Component {
       url: `${this.props.server}/api/users/`,
       data: newUser
     })
-    .then((res) => {
+    .then((response) => {
       this.setState({
         name: '',
         email: '',
         age: '',
         gender: '',
         formClassName: 'success',
+        formSuccessMessage: response.data.msg
       });
+      this.props.onUsersListChange(response.data.addedUser);
     })
     .catch((err) => {
       if (err.response) {
@@ -82,8 +85,9 @@ class FormAdd extends Component {
 
   render() {
 
-    let formClassName = this.state.formClassName;
-    let formErrorMessage = this.state.formErrorMessage;
+    const formClassName = this.state.formClassName;
+    const formSuccessMessage = this.state.formSuccessMessage;
+    const formErrorMessage = this.state.formErrorMessage;
 
     return (
       <Form className={formClassName} onSubmit={this.handleSubmit}>
@@ -126,17 +130,17 @@ class FormAdd extends Component {
         <Message
           success
           color='green'
-          header='Success!'
-          content='The user has been added.'
+          header='Nice one!'
+          content={formSuccessMessage}
         />
         <Message
           warning
           color='yellow'
-          header='Ooops...'
+          header='Woah!'
           content={formErrorMessage}
         />
         <Button color='green' floated='right'>Add</Button>
-        <br /><br />
+        <br /><br /> {/* Yikes! */}
       </Form>
     );
   }

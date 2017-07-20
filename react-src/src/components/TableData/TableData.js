@@ -3,8 +3,8 @@ import { Button, Table } from 'semantic-ui-react';
 
 const ButtonAction = () => (
   <div>
-    <Button secondary>Edit</Button>
-    <Button>Delete</Button>
+    <Button>Edit</Button>
+    <Button secondary>Delete</Button>
   </div>
 )
 

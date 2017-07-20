@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Select } from 'semantic-ui-react';
+import { Message, Button, Form, Select } from 'semantic-ui-react';
 import axios from 'axios';
 
 const genderOptions = [
@@ -15,7 +15,9 @@ class FormAdd extends Component {
       name: '',
       email: '',
       age: '',
-      gender: ''
+      gender: '',
+      formClassName: '',
+      formErrorMessage: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,7 +40,7 @@ class FormAdd extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const newUser = {
+    let newUser = {
       name: this.state.name,
       email: this.state.email,
       age: parseInt(this.state.age, 10),
@@ -52,16 +54,39 @@ class FormAdd extends Component {
       data: newUser
     })
     .then((res) => {
-      alert('Successfully added!');
+      this.setState({
+        name: '',
+        email: '',
+        age: '',
+        gender: '',
+        formClassName: 'success',
+      });
     })
     .catch((err) => {
-      alert(err.response.data.msg);
+      if (err.response) {
+        if (err.response.data) {
+          this.setState({
+            formClassName: 'warning',
+            formErrorMessage: err.response.data.msg
+          });
+        }
+      }
+      else {
+        this.setState({
+          formClassName: 'warning',
+          formErrorMessage: 'Something went wrong.'
+        });
+      }
     });
   }
 
   render() {
+
+    let formClassName = this.state.formClassName;
+    let formErrorMessage = this.state.formErrorMessage;
+
     return (
-      <Form warning onSubmit={this.handleSubmit}>
+      <Form className={formClassName} onSubmit={this.handleSubmit}>
         <Form.Input
           label='Name'
           type='text'
@@ -72,7 +97,7 @@ class FormAdd extends Component {
         />
         <Form.Input
           label='Email'
-          type='email'
+          type='text'
           placeholder='elonmusk@tesla.com'
           name='email'
           value={this.state.email}
@@ -98,7 +123,19 @@ class FormAdd extends Component {
             onChange={this.handleSelectChange}
           />
         </Form.Group>
-        <Button primary floated='right'>Add</Button>
+        <Message
+          success
+          color='green'
+          header='Success!'
+          content='The user has been added.'
+        />
+        <Message
+          warning
+          color='yellow'
+          header='Ooops...'
+          content={formErrorMessage}
+        />
+        <Button color='green' floated='right'>Add</Button>
         <br /><br />
       </Form>
     );

@@ -21,7 +21,7 @@ class ModalFormAdd extends Component {
 
     return (
       <div>
-        <Button onClick={this.show('tiny')} primary>Add New</Button>
+        <Button onClick={this.show('tiny')} positive>Add New</Button>
 
         <Modal size={size} open={open} onClose={this.close}>
           <Modal.Header>

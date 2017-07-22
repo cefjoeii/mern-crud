@@ -7,10 +7,11 @@ const genderOptions = [
   { key: 'f', text: 'Female', value: 'f' },
 ]
 
-class FormAdd extends Component {
+class FormUser extends Component {
 
   constructor(props) {
     super(props);
+    
     this.state = {
       name: '',
       email: '',
@@ -24,6 +25,23 @@ class FormAdd extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    if (this.props.userID) {
+      axios.get(`${this.props.server}/api/users/?id=${this.props.userID}`)
+      .then((response) => {
+        this.setState({
+          name: response.data.name,
+          email: response.data.email,
+          age: (response.data.age === null) ? '' : response.data.age,
+          gender: response.data.gender,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 
   handleInputChange(e) {
@@ -44,26 +62,38 @@ class FormAdd extends Component {
     const newUser = {
       name: this.state.name,
       email: this.state.email,
-      age: parseInt(this.state.age, 10),
+      age: this.state.age,
       gender: this.state.gender
     }
 
+    const method = this.props.userID ? 'put' : 'post';
+    const params = this.props.userID ? this.props.userID : '';
+
     axios({
-      method: 'post',
+      method: method,
       responseType: 'json',
-      url: `${this.props.server}/api/users/`,
+      url: `${this.props.server}/api/users/${params}`,
       data: newUser
     })
     .then((response) => {
       this.setState({
-        name: '',
-        email: '',
-        age: '',
-        gender: '',
         formClassName: 'success',
         formSuccessMessage: response.data.msg
       });
-      this.props.onUsersListChange(response.data.addedUser);
+
+      if (!this.props.userID) {
+        this.setState({
+          name: '',
+          email: '',
+          age: '',
+          gender: ''
+        });
+        this.props.onUserAdded(response.data.result);
+      }
+      else {
+        this.props.onUserUpdated(response.data.result);
+      }
+      
     })
     .catch((err) => {
       if (err.response) {
@@ -77,7 +107,7 @@ class FormAdd extends Component {
       else {
         this.setState({
           formClassName: 'warning',
-          formErrorMessage: 'Something went wrong.'
+          formErrorMessage: 'Something went wrong.' + err
         });
       }
     });
@@ -110,10 +140,10 @@ class FormAdd extends Component {
         <Form.Group widths='equal'>
           <Form.Input
             label='Age'
-            type='number'
+            type='text'
             placeholder='18'
             min={0}
-            max={120}
+            max={130}
             name='age'
             value={this.state.age}
             onChange={this.handleInputChange}
@@ -139,11 +169,11 @@ class FormAdd extends Component {
           header='Woah!'
           content={formErrorMessage}
         />
-        <Button color='green' floated='right'>Add</Button>
+        <Button color={this.props.buttonColor} floated='right'>{this.props.buttonSubmitTitle}</Button>
         <br /><br /> {/* Yikes! */}
       </Form>
     );
   }
 }
 
-export default FormAdd;
+export default FormUser;

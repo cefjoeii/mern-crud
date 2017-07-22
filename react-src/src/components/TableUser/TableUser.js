@@ -1,29 +1,36 @@
 import React, { Component } from 'react';
 import { Button, Table } from 'semantic-ui-react';
 
-const ButtonAction = () => (
-  <div>
-    <Button color='blue'>Edit</Button>
-    <Button color='black'>Delete</Button>
-  </div>
-)
+import ModalUser from '../ModalUser/ModalUser';
 
-class TableData extends Component {
+class TableUser extends Component {
 
   render() {
-    const users = this.props.users;
 
-    let user = users.map((user) =>
+    let users = this.props.users;
+
+    users = users.map((user) => 
       <Table.Row key={user._id}>
         <Table.Cell>{user.name}</Table.Cell>
         <Table.Cell>{user.email}</Table.Cell>
         <Table.Cell>{user.age}</Table.Cell>
         <Table.Cell>{user.gender}</Table.Cell>
-        <Table.Cell><ButtonAction /></Table.Cell>
+        <Table.Cell>
+          <ModalUser
+            headerTitle='Edit User'
+            buttonTriggerTitle='Edit'
+            buttonSubmitTitle='Save'
+            buttonColor='blue'
+            userID={user._id}
+            onUserUpdated={this.props.onUserUpdated}
+            server={this.props.server}
+          />
+          <Button color='black'>Delete</Button>
+        </Table.Cell>
       </Table.Row>
     );
 
-    user =  [...user].reverse();
+    users =  [...users].reverse();
 
     return (
       <Table singleLine>
@@ -37,11 +44,11 @@ class TableData extends Component {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {user}
+          {users}
         </Table.Body>
       </Table>
     );
   }
 }
 
-export default TableData;
+export default TableUser;

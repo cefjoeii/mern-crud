@@ -25,11 +25,7 @@ const emailValidator = [
 ];
 
 const ageValidator = [
-  // validate({
-  //   validator: 'isInt',
-  //   arguments: [1, 120],
-  //   message: 'Age must be valid.'
-  // })
+  // TODO: Make some validators here...
 ];
 
 const genderValidator = [

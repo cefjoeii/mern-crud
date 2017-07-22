@@ -15,6 +15,15 @@
   font-size: large;
 }
 
+a.social-link {
+  color: #fff;
+  font-family: monospace;
+}
+
+a.social-link:hover {
+  color: #ccc;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

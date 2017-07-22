@@ -1,6 +1,6 @@
 # mern-crud
 
-A CRUD starter kit using MongoDB, Express.js, React.js, and Node.js. Semantic UI React was used as I'm opinionatedly not pleased with Material-UI.
+A CRUD starter kit using MongoDB, Express.js, React.js, and Node.js. Semantic UI React was used for the UI.
 
 Make sure MongoDB service is running.
 
@@ -43,10 +43,11 @@ It will create a folder named *public* on the root directory. This is where the 
 ## Features You Can Manually Add
 
 * Front-end validation. Pure back-end validation is expensive.
+* Real-time broadcast using socket.io
 
 ## To Do
 
 - [x] Create
 - [x] Read
-- [ ] Update
+- [x] Update
 - [ ] Delete

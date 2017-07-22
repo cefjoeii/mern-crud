@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 
-import TableData from '../TableData/TableData';
-import ModalAdd from '../ModalAdd/ModalAdd';
+import TableUser from '../TableUser/TableUser';
+import ModalUser from '../ModalUser/ModalUser';
 
 import logo from '../../logo.svg';
 import './App.css';
 
 class App extends Component {
 
-  // Pass this as a prop
-  server = 'http://localhost:3000'; // http://localhost:3000
+  // Change this when deploying.
+  server = 'http://localhost:3000';
 
   constructor() {
     super();
@@ -20,9 +20,11 @@ class App extends Component {
       users: []
     }
 
-    this.handleUsersListChange = this.handleUsersListChange.bind(this);
+    this.handleUserAdded = this.handleUserAdded.bind(this);
+    this.handleUserUpdated = this.handleUserUpdated.bind(this);
   }
 
+  // Fetch data from the back-end
   componentDidMount() {
     axios.get(`${this.server}/api/users/`)
     .then((response) => {
@@ -33,12 +35,24 @@ class App extends Component {
     });
   }
 
-  handleUsersListChange(addedUser) {
-    const users = this.state.users.slice();
-    users.push(addedUser);
-    this.setState({
-      users: users
-    });
+  handleUserAdded(user) {
+    let users = this.state.users.slice();
+    users.push(user);
+    this.setState({ users: users });
+  }
+
+  handleUserUpdated(user) {
+    let users = this.state.users.slice();
+    for (let i = 0, n = users.length; i < n; i++) {
+      if (users[i]._id === user._id) {
+        users[i].name = user.name;
+        users[i].email = user.email;
+        users[i].age = user.age;
+        users[i].gender = user.gender;
+        break; //Stop this loop, we found it!
+      }
+    }
+    this.setState({ users: users })
   }
 
   render() {
@@ -47,14 +61,26 @@ class App extends Component {
         <div className="App">
           <div className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <h2>MERN CRUD Starter Kit</h2>
+            <h1>MERN CRUD Starter Kit</h1>
             <p>A Create, Read, Update, and Delete starter kit using MongoDB, Express.js, React.js, and Node.js</p>
-            <p>Semantic UI React was used for the UI.</p>
+            <p>REST API was implemented on the back-end. Semantic UI React was used for the UI.</p>
+            <p><a className="social-link" href="https://github.com/cefjoeii" target="_blank" rel="noopener noreferrer">GitHub</a> &bull; <a className="social-link" href="https://linkedin.com/in/cefjoeii" target="_blank" rel="noopener noreferrer">LinkedIn</a> &bull; <a className="social-link" href="https://twitter.com/cefjoeii" target="_blank" rel="noopener noreferrer">Twitter</a></p>
           </div>
         </div>
         <Container>
-          <ModalAdd onUsersListChange={this.handleUsersListChange} server={this.server} />
-          <TableData users={this.state.users} />
+          <ModalUser
+            headerTitle='Add User'
+            buttonTriggerTitle='Add New'
+            buttonSubmitTitle='Add'
+            buttonColor='green'
+            onUserAdded={this.handleUserAdded}
+            server={this.server}
+          />
+          <TableUser
+            onUserUpdated={this.handleUserUpdated}
+            users={this.state.users}
+            server={this.server}
+          />
         </Container>
         <br/>
       </div>

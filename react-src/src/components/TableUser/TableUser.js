@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Table } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 
 import ModalUser from '../ModalUser/ModalUser';
+import ModalConfirmDelete from '../ModalConfirmDelete/ModalConfirmDelete';
 
 class TableUser extends Component {
 
@@ -25,11 +26,19 @@ class TableUser extends Component {
             onUserUpdated={this.props.onUserUpdated}
             server={this.props.server}
           />
-          <Button color='black'>Delete</Button>
+          <ModalConfirmDelete
+            headerTitle='Delete User'
+            buttonTriggerTitle='Delete'
+            buttonColor='black'
+            user={user}
+            onUserDeleted={this.props.onUserDeleted}
+            server={this.props.server}
+          />
         </Table.Cell>
       </Table.Row>
     );
 
+    // Make the latest new user appear on top of the list
     users =  [...users].reverse();
 
     return (

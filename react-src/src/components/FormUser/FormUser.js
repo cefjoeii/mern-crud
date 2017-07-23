@@ -107,7 +107,7 @@ class FormUser extends Component {
       else {
         this.setState({
           formClassName: 'warning',
-          formErrorMessage: 'Something went wrong.' + err
+          formErrorMessage: 'Something went wrong. ' + err
         });
       }
     });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const sanitizeName = require('string-capitalize-name');
 const config = require('../config/db');
 const User = require('../models/user');
 
@@ -41,7 +42,7 @@ router.post('/', (req, res) => {
   else if (age > 130 && age != '') return res.status(400).json({ success: false, msg: 'You\'re too old for this.'});
 
   let newUser = new User({
-    name: req.body.name,
+    name: sanitizeName(req.body.name),
     email: req.body.email,
     age: sanitizeAge(req.body.age),
     gender: req.body.gender
@@ -96,7 +97,7 @@ router.put('/:id', (req, res) => {
   else if (age > 130 && age != '') return res.status(400).json({ success: false, msg: 'You\'re too old for this.'});
 
   let updatedUser = {
-    name: req.body.name,
+    name: sanitizeName(req.body.name),
     email: req.body.email,
     age: sanitizeAge(req.body.age),
     gender: req.body.gender
@@ -159,7 +160,17 @@ router.delete('/:id', (req, res) => {
   // TODO: Coming soon...
   User.findByIdAndRemove(req.params.id).
   then((result) => {
-    res.json({ success: true, msg: 'It has been deleted.'});
+    res.json({
+      success: true,
+      msg: 'It has been deleted.',
+      result: {
+        _id: result._id,
+        name: result.name,
+        email: result.email,
+        age: result.age,
+        gender: result.gender
+      }
+    });
   })
   .catch((err) => {
     res.status(400).json({ success: false, msg: 'Nothing to delete.'});

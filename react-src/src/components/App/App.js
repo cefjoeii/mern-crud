@@ -16,12 +16,11 @@ class App extends Component {
   constructor() {
     super();
 
-    this.state = {
-      users: []
-    }
+    this.state = { users: [] }
 
     this.handleUserAdded = this.handleUserAdded.bind(this);
     this.handleUserUpdated = this.handleUserUpdated.bind(this);
+    this.handleUserDeleted = this.handleUserDeleted.bind(this);
   }
 
   // Fetch data from the back-end
@@ -52,7 +51,13 @@ class App extends Component {
         break; //Stop this loop, we found it!
       }
     }
-    this.setState({ users: users })
+    this.setState({ users: users });
+  }
+
+  handleUserDeleted(user) {
+    let users = this.state.users.slice();
+    users = users.filter(function(u) { return u._id !== user._id; });
+    this.setState({ users: users });
   }
 
   render() {
@@ -78,6 +83,7 @@ class App extends Component {
           />
           <TableUser
             onUserUpdated={this.handleUserUpdated}
+            onUserDeleted={this.handleUserDeleted}
             users={this.state.users}
             server={this.server}
           />

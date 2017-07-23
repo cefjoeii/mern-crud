@@ -1,6 +1,6 @@
-# mern-crud
+# MERN CRUD Starter Kit
 
-A CRUD starter kit using MongoDB, Express.js, React.js, and Node.js. Semantic UI React was used for the UI.
+A Create, Read, Update, and Delete starter kit using MongoDB, Express.js, React.js, and Node.js. REST API was implemented on the back-end. Semantic UI React was used for the UI.
 
 Make sure MongoDB service is running.
 
@@ -10,9 +10,9 @@ For the **back-end**, install the dependencies once.
 ```
 npm install
 ```
-Run the server.
+Run the *main server*. It will listen on port 3000.
 ```
-npm start
+node server
 ``` 
 
 <br>
@@ -28,7 +28,7 @@ Install the node packages required by React once.
 npm install
 ```
 
-Run the development server for React.
+Run the *development server* for React. It will listen on port 4200.
 ```
 npm start
 ```
@@ -38,16 +38,18 @@ To make a production build, simply run on *react-src* folder.
 npm run build
 ```
 
-It will create a folder named *public* on the root directory. This is where the production-ready front-end of the web application will reside.
-
-## Features You Can Manually Add
-
-* Front-end validation. Pure back-end validation is expensive.
-* Real-time broadcast using socket.io
+It will create a folder named *public* on the root directory. This is where the production-ready front-end of the web application will reside. It can now be directly viewed through the *main server* without running the React development server.
 
 ## To Do
 
 - [x] Create
 - [x] Read
 - [x] Update
-- [ ] Delete
+- [x] Delete
+
+## Future Plans
+
+* Search
+* Front-end validation; Pure back-end validation is expensive
+* Real-time broadcast using socket.io
+* Routing / redirecting / whatever

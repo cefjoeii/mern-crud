@@ -4,7 +4,7 @@
   "description": "A CRUD starter kit using MongoDB, Express.js, React.js, and Node.js",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
+    "start": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,8 +23,8 @@
     "cors": "^2.8.4",
     "express": "^4.15.3",
     "mongoose": "4.10.8",
-    "mongoose-title-case": "0.0.4",
     "mongoose-unique-validator": "^1.0.5",
-    "mongoose-validator": "^1.3.2"
+    "mongoose-validator": "^1.3.2",
+    "string-capitalize-name": "^1.0.3"
   }
 }

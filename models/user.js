@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const titlize = require('mongoose-title-case');
 const unique = require('mongoose-unique-validator');
 const validate = require('mongoose-validator');
 const config = require('../config/db');
@@ -56,8 +55,5 @@ const UserSchema = new mongoose.Schema({
 
 // Use the unique validator plugin
 UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
-
-// Make the name capitalization consistent
-UserSchema.plugin(titlize, { paths: ['name'], trim: false });
 
 const User = module.exports = mongoose.model('user', UserSchema);

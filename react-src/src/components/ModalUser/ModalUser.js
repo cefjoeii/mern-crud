@@ -22,6 +22,7 @@ class ModalUser extends Component {
             onUserAdded={this.props.onUserAdded}
             onUserUpdated={this.props.onUserUpdated}
             server={this.props.server}
+            socket={this.props.socket}
           />
         </Modal.Content>
       </Modal>

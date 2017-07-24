@@ -37,6 +37,7 @@
     "react-error-overlay": "^1.0.9",
     "semantic-ui-css": "^2.2.11",
     "semantic-ui-react": "^0.71.1",
+    "socket.io-client": "^2.0.3",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "0.11.3",
     "url-loader": "0.5.9",

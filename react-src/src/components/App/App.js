@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 import TableUser from '../TableUser/TableUser';
 import ModalUser from '../ModalUser/ModalUser';
@@ -13,24 +14,41 @@ class App extends Component {
   // Change this when deploying.
   server = 'http://localhost:3000';
 
+  // Leave the parameter empty when deploying
+  socket = io.connect(this.server);
+
   constructor() {
     super();
 
-    this.state = { users: [] }
+    this.state = {
+      users: [],
+      online: 0
+    }
 
+    this.fetchUsers = this.fetchUsers.bind(this);
     this.handleUserAdded = this.handleUserAdded.bind(this);
     this.handleUserUpdated = this.handleUserUpdated.bind(this);
     this.handleUserDeleted = this.handleUserDeleted.bind(this);
   }
 
-  // Fetch data from the back-end
+  // Place socket.io code inside here
   componentDidMount() {
+    this.fetchUsers();
+    this.socket.on('visitor enters', data => this.setState({ online: data }));
+    this.socket.on('visitor exits', data => this.setState({ online: data }));
+    this.socket.on('add', data => this.handleUserAdded(data));
+    this.socket.on('update', data => this.handleUserUpdated(data));
+    this.socket.on('delete', data => this.handleUserDeleted(data));
+  }
+
+  // Fetch data from the back-end
+  fetchUsers() {
     axios.get(`${this.server}/api/users/`)
     .then((response) => {
       this.setState({ users: response.data });
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -48,7 +66,7 @@ class App extends Component {
         users[i].email = user.email;
         users[i].age = user.age;
         users[i].gender = user.gender;
-        break; //Stop this loop, we found it!
+        break; // Stop this loop, we found it!
       }
     }
     this.setState({ users: users });
@@ -56,20 +74,27 @@ class App extends Component {
 
   handleUserDeleted(user) {
     let users = this.state.users.slice();
-    users = users.filter(function(u) { return u._id !== user._id; });
+    users = users.filter(u => { return u._id !== user._id; });
     this.setState({ users: users });
   }
 
   render() {
+
+    let online = this.state.online;
+    let verb = (online <= 1) ? 'is' : 'are'; // linking verb, if you'd prefer
+    let noun = (online <= 1) ? 'person' : 'people';
+
     return (
       <div>
         <div className="App">
           <div className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <h1>MERN CRUD Starter Kit</h1>
-            <p>A Create, Read, Update, and Delete starter kit using MongoDB, Express.js, React.js, and Node.js</p>
+            <h1>MERN CRUD</h1>
+            <p>A simple records system using MongoDB, Express.js, React.js, and Node.js with real-time Create, Read, Update, and Delete using Socket.io.</p>
             <p>REST API was implemented on the back-end. Semantic UI React was used for the UI.</p>
-            <p><a className="social-link" href="https://github.com/cefjoeii" target="_blank" rel="noopener noreferrer">GitHub</a> &bull; <a className="social-link" href="https://linkedin.com/in/cefjoeii" target="_blank" rel="noopener noreferrer">LinkedIn</a> &bull; <a className="social-link" href="https://twitter.com/cefjoeii" target="_blank" rel="noopener noreferrer">Twitter</a></p>
+            <p>
+              <a className="social-link" href="https://github.com/cefjoeii" target="_blank" rel="noopener noreferrer">GitHub</a> &bull; <a className="social-link" href="https://linkedin.com/in/cefjoeii" target="_blank" rel="noopener noreferrer">LinkedIn</a> &bull; <a className="social-link" href="https://twitter.com/cefjoeii" target="_blank" rel="noopener noreferrer">Twitter</a>
+            </p>
           </div>
         </div>
         <Container>
@@ -80,12 +105,15 @@ class App extends Component {
             buttonColor='green'
             onUserAdded={this.handleUserAdded}
             server={this.server}
+            socket={this.socket}
           />
+          <em id='online'>{`${online} ${noun} ${verb} online.`}</em>
           <TableUser
             onUserUpdated={this.handleUserUpdated}
             onUserDeleted={this.handleUserDeleted}
             users={this.state.users}
             server={this.server}
+            socket={this.socket}
           />
         </Container>
         <br/>

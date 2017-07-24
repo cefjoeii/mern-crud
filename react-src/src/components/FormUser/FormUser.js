@@ -28,6 +28,7 @@ class FormUser extends Component {
   }
 
   componentWillMount() {
+    // Fill in the form with the appropriate data if user id is provided
     if (this.props.userID) {
       axios.get(`${this.props.server}/api/users/?id=${this.props.userID}`)
       .then((response) => {
@@ -38,8 +39,8 @@ class FormUser extends Component {
           gender: response.data.gender,
         });
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
     }
   }
@@ -57,15 +58,18 @@ class FormUser extends Component {
   }
 
   handleSubmit(e) {
+    // Prevent browser refresh
     e.preventDefault();
 
-    const newUser = {
+    const user = {
       name: this.state.name,
       email: this.state.email,
       age: this.state.age,
       gender: this.state.gender
     }
 
+    // Acknowledge that if the user id is provided, we're updating via PUT
+    // Otherwise, we're creating a new data via POST
     const method = this.props.userID ? 'put' : 'post';
     const params = this.props.userID ? this.props.userID : '';
 
@@ -73,7 +77,7 @@ class FormUser extends Component {
       method: method,
       responseType: 'json',
       url: `${this.props.server}/api/users/${params}`,
-      data: newUser
+      data: user
     })
     .then((response) => {
       this.setState({
@@ -89,9 +93,11 @@ class FormUser extends Component {
           gender: ''
         });
         this.props.onUserAdded(response.data.result);
+        this.props.socket.emit('add', response.data.result);
       }
       else {
         this.props.onUserUpdated(response.data.result);
+        this.props.socket.emit('update', response.data.result);
       }
       
     })
@@ -131,7 +137,7 @@ class FormUser extends Component {
         />
         <Form.Input
           label='Email'
-          type='text'
+          type='email'
           placeholder='elonmusk@tesla.com'
           name='email'
           value={this.state.email}
@@ -140,7 +146,7 @@ class FormUser extends Component {
         <Form.Group widths='equal'>
           <Form.Input
             label='Age'
-            type='text'
+            type='number'
             placeholder='18'
             min={0}
             max={130}
@@ -170,7 +176,7 @@ class FormUser extends Component {
           content={formErrorMessage}
         />
         <Button color={this.props.buttonColor} floated='right'>{this.props.buttonSubmitTitle}</Button>
-        <br /><br /> {/* Yikes! */}
+        <br /><br /> {/* Yikes! Deal with Semantic UI React! */}
       </Form>
     );
   }

@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const sanitizeName = require('string-capitalize-name');
-const config = require('../config/db');
+
 const User = require('../models/user');
 
 sanitizeAge = (age) => {
+  // Return empty if age is non-numeric
   if (isNaN(age) && age != '') return '';
+
   return (age === '') ? age : parseInt(age);
 }
 
@@ -124,7 +126,7 @@ router.put('/:id', (req, res) => {
     })
 
     .catch((err) => {
-      res.status(400).json({ success: false, msg: 'Something went wrong. Failed to add.' });
+      res.status(400).json({ success: false, msg: 'Something went wrong. ' + err });
       return;
     });
 
@@ -149,7 +151,7 @@ router.put('/:id', (req, res) => {
         return;
       }
       // Show failed if all else fails for some reasons
-      res.status(400).json({ success: false, msg: 'Something went wrong. Failed to update.'});
+      res.status(400).json({ success: false, msg: 'Something went wrong. ' + err});
     }
   });
 
@@ -157,9 +159,9 @@ router.put('/:id', (req, res) => {
 
 // DELETE
 router.delete('/:id', (req, res) => {
-  // TODO: Coming soon...
-  User.findByIdAndRemove(req.params.id).
-  then((result) => {
+
+  User.findByIdAndRemove(req.params.id)
+  .then((result) => {
     res.json({
       success: true,
       msg: 'It has been deleted.',

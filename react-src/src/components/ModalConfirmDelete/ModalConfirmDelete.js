@@ -16,8 +16,8 @@ class ModalConfirmDelete extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleOpen = (e) => this.setState({ modalOpen: true });
-  handleClose = (e) => this.setState({ modalOpen: false });
+  handleOpen = e => this.setState({ modalOpen: true });
+  handleClose = e => this.setState({ modalOpen: false });
 
   handleSubmit(e) {
 
@@ -31,6 +31,7 @@ class ModalConfirmDelete extends Component {
     .then((response) => {
       this.handleClose();
       this.props.onUserDeleted(response.data.result);
+      this.props.socket.emit('delete', response.data.result);
     })
     .catch((err) => {
       this.handleClose();

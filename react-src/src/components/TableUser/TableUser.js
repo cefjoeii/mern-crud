@@ -25,6 +25,7 @@ class TableUser extends Component {
             userID={user._id}
             onUserUpdated={this.props.onUserUpdated}
             server={this.props.server}
+            socket={this.props.socket}
           />
           <ModalConfirmDelete
             headerTitle='Delete User'
@@ -33,12 +34,13 @@ class TableUser extends Component {
             user={user}
             onUserDeleted={this.props.onUserDeleted}
             server={this.props.server}
+            socket={this.props.socket}
           />
         </Table.Cell>
       </Table.Row>
     );
 
-    // Make the latest new user appear on top of the list
+    // Make every new user appear on top of the list
     users =  [...users].reverse();
 
     return (

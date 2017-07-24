@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const unique = require('mongoose-unique-validator');
 const validate = require('mongoose-validator');
+
 const config = require('../config/db');
 
 const nameValidator = [
@@ -24,13 +25,14 @@ const emailValidator = [
 ];
 
 const ageValidator = [
-  // TODO: Make some validators here...
+  // TODO: Make some validations here...
 ];
 
 const genderValidator = [
-  // TODO: Make some validators here...
+  // TODO: Make some validations here...
 ];
 
+// Define the database model
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,

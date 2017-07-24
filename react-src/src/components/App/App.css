@@ -28,3 +28,7 @@ a.social-link:hover {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+#online {
+  margin-left: 10px;
+}

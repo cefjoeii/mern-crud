@@ -4,14 +4,19 @@ A simple records system using MongoDB, Express.js, React.js, and Node.js with re
 
 Demo: [https://mern-crud.herokuapp.com/](https://mern-crud.herokuapp.com/)
 
-<br>
+![MERN CRUD Screenshot](screenshot.png)
+
+## Instructions
+
+Download or clone.
+```
+git clone https://github.com/cefjoeii/mern-crud.git
+```
 
 *Make sure MongoDB service is running.*
 
-<br>
-
 The *config* folder contains a file named *db.js*. Before running locally, change the value of db as seen in the code below.
-```
+```js
 module.exports = {
   db: 'mongodb://localhost/mern-crud'
 };
@@ -52,6 +57,8 @@ npm run build
 ```
 
 It re-creates a folder named *public* on the root directory. This is where the production-ready front-end of the web application resides.
+
+<br>
 
 ## To Do
 

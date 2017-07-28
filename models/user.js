@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const unique = require('mongoose-unique-validator');
 const validate = require('mongoose-validator');
 
-const config = require('../config/db');
-
 const nameValidator = [
   validate({
     validator: 'isLength',

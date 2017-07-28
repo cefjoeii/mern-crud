@@ -19,11 +19,16 @@ db.on('open', () => {
 });
 
 db.on('error', (err) => {
-  console.log('Database error: ' + err);
+  console.log(`Database error: ${err}`);
 });
 
 // Instantiate express
 const app = express();
+
+// Don't touch this if you don't know it
+// We are using this for the express-rate-limit middleware
+// See: https://github.com/nfriedly/express-rate-limit
+app.enable('trust proxy');
 
 // Set public folder using built-in express.static middleware
 app.use(express.static('public'));
@@ -32,7 +37,8 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 // Enable cross-origin access through the CORS middleware
-app.use(cors());
+// NOTICE: For React development server only! Comment it out when deploying.
+// app.use(cors());
 
 // Initialize routes middleware
 app.use('/api/users', require('./routes/users'));
@@ -47,7 +53,7 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
-  console.log('Listening on port ' + port);
+  console.log(`Listening on port ${port}`);
 });
 
 // Set up socket.io

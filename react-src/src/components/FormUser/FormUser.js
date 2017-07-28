@@ -30,7 +30,7 @@ class FormUser extends Component {
   componentWillMount() {
     // Fill in the form with the appropriate data if user id is provided
     if (this.props.userID) {
-      axios.get(`${this.props.server}/api/users/?id=${this.props.userID}`)
+      axios.get(`${this.props.server}/api/users/${this.props.userID}`)
       .then((response) => {
         this.setState({
           name: response.data.name,
@@ -132,6 +132,8 @@ class FormUser extends Component {
           type='text'
           placeholder='Elon Musk'
           name='name'
+          maxLength='40'
+          required
           value={this.state.name}
           onChange={this.handleInputChange}
         />
@@ -140,6 +142,8 @@ class FormUser extends Component {
           type='email'
           placeholder='elonmusk@tesla.com'
           name='email'
+          maxLength='40'
+          required
           value={this.state.email}
           onChange={this.handleInputChange}
         />
@@ -148,7 +152,7 @@ class FormUser extends Component {
             label='Age'
             type='number'
             placeholder='18'
-            min={0}
+            min={5}
             max={130}
             name='age'
             value={this.state.age}

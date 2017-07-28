@@ -13,6 +13,7 @@ Download or clone.
 git clone https://github.com/cefjoeii/mern-crud.git
 ```
 
+
 *Make sure MongoDB service is running.*
 
 The *config* folder contains a file named *db.js*. Before running locally, change the value of db as seen in the code below.
@@ -50,8 +51,12 @@ Run the *development server* for React. It listens on port 4200.
 ```
 npm start
 ```
+Since it's running on a different port, we need to enable CORS. Locate the file called *server.js* on the root directory. Find and uncomment this line of code. Remember to comment it back out when deploying.
+```js
+// app.use(cors());
+```
 
-To make a production build, simply run on *react-src* folder.
+To make a production build, simply run on *react-src* folder via the terminal.
 ```
 npm run build
 ```
@@ -68,11 +73,12 @@ It re-creates a folder named *public* on the root directory. This is where the p
 - [x] Delete
 - [x] Real-time broadcast using Socket.io
 - [x] Deploy in Heroku
+- [x] Front-end validation (HTML)
 
 ## Future Plans
 
 * Search
-* Front-end validation; Pure back-end validation is expensive
+* Front-end validation (JS); Pure back-end validation is expensive
 * Routing / redirecting / whatever
 * Learn Redux
 * Learn creating tests

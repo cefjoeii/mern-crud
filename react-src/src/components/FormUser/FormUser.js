@@ -5,6 +5,7 @@ import axios from 'axios';
 const genderOptions = [
   { key: 'm', text: 'Male', value: 'm' },
   { key: 'f', text: 'Female', value: 'f' },
+  { key: 'o', text: 'Do Not Disclose', value: 'o' }
 ]
 
 class FormUser extends Component {

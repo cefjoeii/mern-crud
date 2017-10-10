@@ -37,7 +37,7 @@ npm install
 
 Run the *main server*. It listens on port 3000.
 ```bash
-node server
+CORS=1 node server
 ```
 View it on the browser.
 
@@ -56,11 +56,7 @@ npm install
 
 Run the *development server* for React. It listens on port 4200.
 ```bash
-npm start
-```
-Since it's running on a different port, we need to enable CORS. Locate the file called *server.js* on the root directory. Find and uncomment this line of code. Remember to comment it back out when deploying.
-```js
-// app.use(cors());
+REACT_APP_API_URL=http://localhost:3000 npm start
 ```
 
 To make a production build, simply run on *react-src* folder via the terminal.
@@ -70,6 +66,10 @@ npm run build
 
 It re-creates a folder named *public* on the root directory. This is where the production-ready front-end of the web application resides.
 
+## Docker
+```bash
+docker-compose up
+```
 <br>
 
 ## Contributing

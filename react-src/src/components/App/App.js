@@ -12,14 +12,11 @@ import './App.css';
 
 class App extends Component {
 
-  // Set this to an empty string when making a production build
-  server = ''; // server = 'http://localhost:3000';
-
-  // Leave the parameter empty when making a production build
-  socket = io.connect(); // socket = io.connect(this.server);
-
   constructor() {
     super();
+
+    this.server = process.env.REACT_APP_API_URL || '';
+    this.socket = io.connect(this.server);
 
     this.state = {
       users: [],

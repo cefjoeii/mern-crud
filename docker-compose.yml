@@ -11,6 +11,7 @@ services:
     environment:
       - "DB=mongodb://db/mern-crud"
       - "CORS=1"
+      - "DEBUG=express:*"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

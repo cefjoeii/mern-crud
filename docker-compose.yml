@@ -1,0 +1,31 @@
+version: '2'
+services:
+  db:
+    image: mongo:latest
+  api:
+    build: .
+    image: mern-crud
+    command: nodemon server
+    ports:
+      - "3000:3000"
+    environment:
+      - "DB=mongodb://db/mern-crud"
+      - "CORS=1"
+      - "DEBUG=express:*"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+  web:
+    image: mern-crud
+    command: npm start --prefix react-src
+    ports:
+      - "4200:4200"
+    environment:
+      - "REACT_APP_API_URL=http://localhost:3000"
+    volumes:
+      - ./react-src:/usr/src/app/react-src
+      - /usr/src/app/react-src/node_modules
+    depends_on:
+      - api

@@ -37,8 +37,10 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 // Enable cross-origin access through the CORS middleware
-// NOTICE: For React development server only! Comment it out when deploying.
-// app.use(cors());
+// NOTICE: For React development server only!
+if (process.env.CORS) {
+  app.use(cors());
+}
 
 // Initialize routes middleware
 app.use('/api/users', require('./routes/users'));

@@ -123,7 +123,7 @@ router.put('/:id', (req, res) => {
             }
           });
         })
-        .catch((err) => {
+        .catch((err) => { //catch error when not successfull find update
           res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
           return;
         });

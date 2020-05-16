@@ -19,14 +19,14 @@
   },
   "homepage": "https://github.com/cefjoeii/mern-crud#readme",
   "dependencies": {
-    "body-parser": "1.17.2",
-    "cors": "2.8.4",
-    "express": "4.15.3",
-    "express-rate-limit": "2.9.0",
-    "mongoose": "4.10.8",
-    "mongoose-unique-validator": "1.0.5",
-    "mongoose-validator": "1.3.2",
-    "socket.io": "2.0.3",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "express-rate-limit": "5.1.3",
+    "mongoose": "5.9.13",
+    "mongoose-unique-validator": "2.0.3",
+    "mongoose-validator": "2.1.0",
+    "socket.io": "2.3.0",
     "string-capitalize-name": "1.0.3"
   }
 }

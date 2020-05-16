@@ -2,10 +2,10 @@
 
 A simple records system using MongoDB, Express.js, React.js, and Node.js with real-time Create, Read, Update, and Delete operations using Socket.io. REST API was implemented on the back-end. Semantic UI React was used for the UI.
 
-![Node Version](https://img.shields.io/badge/node-v6.11.0-yellowgreen.svg)
-![NPM Version](https://img.shields.io/badge/npm-v3.10.10-blue.svg)
-![MongoDB Version](https://img.shields.io/badge/mongodb-v3.4.2-blue.svg)
-![Mongoose Version](https://img.shields.io/badge/mongoose-v4.10.8-blue.svg)
+![Node Version](https://img.shields.io/badge/node-v12.16.3-yellowgreen.svg)
+![NPM Version](https://img.shields.io/badge/npm-v6.14.4-blue.svg)
+![MongoDB Version](https://img.shields.io/badge/mongodb-v3.6.12-blue.svg)
+![Mongoose Version](https://img.shields.io/badge/mongoose-v5.9.13-blue.svg)
 ![Language: American English](https://img.shields.io/badge/language-american%20english-red.svg)
 
 

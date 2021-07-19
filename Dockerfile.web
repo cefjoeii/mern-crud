@@ -1,0 +1,14 @@
+FROM node:12
+
+RUN mkdir -p /usr/src/app/react-src
+WORKDIR /usr/src/app
+
+COPY react-src/package.json ./react-src/
+
+RUN npm install --prefix react-src
+
+COPY react-src ./react-src
+
+EXPOSE 4200
+
+CMD npm start --prefix react-src

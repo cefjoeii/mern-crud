@@ -23,10 +23,10 @@
     "cors": "2.8.5",
     "express": "4.17.1",
     "express-rate-limit": "5.1.3",
-    "mongoose": "5.9.13",
+    "mongoose": "^5.13.8",
     "mongoose-unique-validator": "2.0.3",
     "mongoose-validator": "2.1.0",
-    "socket.io": "2.3.0",
+    "socket.io": "^2.4.1",
     "string-capitalize-name": "1.0.3"
   }
 }

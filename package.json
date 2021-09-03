@@ -26,7 +26,7 @@
     "mongoose": "^5.13.8",
     "mongoose-unique-validator": "2.0.3",
     "mongoose-validator": "2.1.0",
-    "socket.io": "^2.4.1",
+    "socket.io": "^4.2.0",
     "string-capitalize-name": "1.0.3"
   }
 }

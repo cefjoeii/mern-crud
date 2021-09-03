@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -6,12 +6,11 @@ import io from 'socket.io-client';
 import TableUser from '../TableUser/TableUser';
 import ModalUser from '../ModalUser/ModalUser';
 
-import logo from '../../logo.svg';
+import logo from '../../mern-logo.svg';
 import shirts from '../../shirts.png';
 import './App.css';
 
 class App extends Component {
-
   constructor() {
     super();
 
@@ -42,12 +41,12 @@ class App extends Component {
   // Fetch data from the back-end
   fetchUsers() {
     axios.get(`${this.server}/api/users/`)
-    .then((response) => {
-      this.setState({ users: response.data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((response) => {
+        this.setState({ users: response.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   handleUserAdded(user) {
@@ -58,15 +57,11 @@ class App extends Component {
 
   handleUserUpdated(user) {
     let users = this.state.users.slice();
-    for (let i = 0, n = users.length; i < n; i++) {
-      if (users[i]._id === user._id) {
-        users[i].name = user.name;
-        users[i].email = user.email;
-        users[i].age = user.age;
-        users[i].gender = user.gender;
-        break; // Stop this loop, we found it!
-      }
-    }
+    
+    let i = users.findIndex(u => u._id === user._id)
+
+    if (users.length > i) { users[i] = user }
+
     this.setState({ users: users });
   }
 
@@ -77,10 +72,16 @@ class App extends Component {
   }
 
   render() {
-
     let online = this.state.online;
-    let verb = (online <= 1) ? 'is' : 'are'; // linking verb, if you'd prefer
-    let noun = (online <= 1) ? 'person' : 'people';
+    let onlineText = ""
+    
+    if (online < 2) {
+      onlineText = 'No one else is online';
+    } else if (online - 1 < 2) {
+      onlineText = `${online - 1} person is online`;
+    } else {
+      onlineText = `${online - 1} people are online`;
+    }
 
     return (
       <div>
@@ -88,14 +89,16 @@ class App extends Component {
           <div className='App-header'>
             <img src={logo} className='App-logo' alt='logo' />
             <h1 className='App-intro'>MERN CRUD</h1>
-            <p>A simple records system using MongoDB, Express.js, React.js, and Node.js with real-time Create, Read, Update, and Delete operations using Socket.io.</p>
-            <p>REST API was implemented on the back-end. Semantic UI React was used for the UI.</p>
             <p>
-              <a className='social-link' href='https://github.com/cefjoeii' target='_blank' rel='noopener noreferrer'>GitHub</a> &bull; <a className='social-link' href='https://linkedin.com/in/cefjoeii' target='_blank' rel='noopener noreferrer'>LinkedIn</a> &bull; <a className='social-link' href='https://twitter.com/cefjoeii' target='_blank' rel='noopener noreferrer'>Twitter</a>
+              A simple records system using MongoDB, Express.js, React.js, and Node.js.
+              <br/>
+              CREATE, READ, UPDATE, and DELETE operations are updated in real-time to online users using Socket.io.
+              <br/>
+              REST API was implemented on the back-end.
             </p>
-            <a className='shirts' href='https://www.teepublic.com/user/codeweario' target='_blank' rel='noopener noreferrer'>
-              <img src={shirts} alt='Programmer Shirts' />
-              <span>Ad</span>
+            <a className='shirts' href='https://www.teepublic.com/en-au/user/codeweario/albums/4812-tech-stacks' target='_blank' rel='noopener noreferrer'>
+              <img src={shirts} alt='Buy MERN Shirts' />
+              <br/>Buy MERN Shirts
             </a>
           </div>
         </div>
@@ -109,7 +112,7 @@ class App extends Component {
             server={this.server}
             socket={this.socket}
           />
-          <em id='online'>{`${online} ${noun} ${verb} online.`}</em>
+          <em id='online'>{onlineText}</em>
           <TableUser
             onUserUpdated={this.handleUserUpdated}
             onUserDeleted={this.handleUserDeleted}
@@ -118,7 +121,7 @@ class App extends Component {
             socket={this.socket}
           />
         </Container>
-        <br/>
+        <br />
       </div>
     );
   }

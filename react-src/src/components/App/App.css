@@ -1,6 +1,6 @@
 .App-header {
   background-color: #222;
-  color: #fff;
+  color: #ccc;
   margin-bottom: 25px;
   padding: 25px 25px 30px;
   text-align: center;
@@ -12,33 +12,24 @@
 }
 
 .App-intro {
-  margin-top: 0;
+  margin-top: 10px;
 }
 
-a.social-link {
-  color: #ccc;
-  font-family: monospace;
-}
-
-a.social-link:hover {
-  color: #fff;
-}
-
-@keyframes App-logo-spin {
+/* @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
+} */
 
 #online {
   margin-left: 10px;
 }
 
 .shirts {
-  opacity: .75;
+  opacity: 1;
 }
 
 .shirts:hover {
-  opacity: 1;
+  opacity: .75;
 }
 
 a.shirts {
@@ -48,4 +39,19 @@ a.shirts {
 
 .shirts img {
   height: 40px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.85);
+	}
+
+	75% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0.85);
+	}
 }

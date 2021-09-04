@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.85902f05.chunk.css",
-    "main.js": "/static/js/main.fce89387.chunk.js",
-    "main.js.map": "/static/js/main.fce89387.chunk.js.map",
+    "main.css": "/static/css/main.f5884d13.chunk.css",
+    "main.js": "/static/js/main.7ed3d460.chunk.js",
+    "main.js.map": "/static/js/main.7ed3d460.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.d7c17a88.js",
     "runtime-main.js.map": "/static/js/runtime-main.d7c17a88.js.map",
     "static/css/2.bad41965.chunk.css": "/static/css/2.bad41965.chunk.css",
@@ -12,17 +12,17 @@
     "static/js/3.c407dd0a.chunk.js.map": "/static/js/3.c407dd0a.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.bad41965.chunk.css.map": "/static/css/2.bad41965.chunk.css.map",
-    "static/css/main.85902f05.chunk.css.map": "/static/css/main.85902f05.chunk.css.map",
+    "static/css/main.f5884d13.chunk.css.map": "/static/css/main.f5884d13.chunk.css.map",
     "static/js/2.87d52fc1.chunk.js.LICENSE.txt": "/static/js/2.87d52fc1.chunk.js.LICENSE.txt",
     "static/media/semantic.min.css": "/static/media/outline-icons.ddae9b1b.woff",
-    "static/media/mern-logo.82c9b07d.svg": "/static/media/mern-logo.82c9b07d.svg",
+    "static/media/mern-logo.dff48ccb.png": "/static/media/mern-logo.dff48ccb.png",
     "static/media/shirts.c698478e.png": "/static/media/shirts.c698478e.png"
   },
   "entrypoints": [
     "static/js/runtime-main.d7c17a88.js",
     "static/css/2.bad41965.chunk.css",
     "static/js/2.87d52fc1.chunk.js",
-    "static/css/main.85902f05.chunk.css",
-    "static/js/main.fce89387.chunk.js"
+    "static/css/main.f5884d13.chunk.css",
+    "static/js/main.7ed3d460.chunk.js"
   ]
 }

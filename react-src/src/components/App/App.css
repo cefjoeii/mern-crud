@@ -2,17 +2,17 @@
   background-color: #222;
   color: #ccc;
   margin-bottom: 25px;
-  padding: 25px 25px 30px;
+  padding: 20px 20px 15px;
   text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 100px;
+  /* animation: App-logo-spin infinite 20s linear; */
+  height: 85px;
 }
 
 .App-intro {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 /* @keyframes App-logo-spin {

@@ -72,15 +72,13 @@ class App extends Component {
   }
 
   render() {
-    let online = this.state.online;
-    let onlineText = ""
-    
-    if (online < 2) {
+    let peopleOnline = this.state.online - 1;
+    let onlineText = "";
+
+    if (peopleOnline < 1) {
       onlineText = 'No one else is online';
-    } else if (online - 1 < 2) {
-      onlineText = `${online - 1} person is online`;
     } else {
-      onlineText = `${online - 1} people are online`;
+      onlineText = peopleOnline > 1 ? `${online - 1} people are online` : `${online - 1} person is online`;
     }
 
     return (

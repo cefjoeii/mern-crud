@@ -36,7 +36,7 @@ class FormUser extends Component {
         this.setState({
           name: response.data.name,
           email: response.data.email,
-          age: (response.data.age === null) ? '' : response.data.age,
+          age: response.data.age ?? '',
           gender: response.data.gender,
         });
       })

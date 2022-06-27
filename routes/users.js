@@ -21,10 +21,10 @@ const postLimiter = new RateLimit({
 router.get('/:id', (req, res) => {
   User.findById(req.params.id)
     .then((result) => {
-      res.json(result);
+      return res.status(200).json(result);
     })
     .catch((err) => {
-      res.status(404).json({ success: false, msg: `No such user.` });
+      return res.status(404).json({ success: false, msg: `No such user.` });
     });
 });
 
@@ -32,15 +32,16 @@ router.get('/:id', (req, res) => {
 router.get('/', (req, res) => {
   User.find({})
     .then((result) => {
-      res.json(result);
+      return res.status(200).json(result);
     })
     .catch((err) => {
-      res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
+      return res.status(500).json({ success: false, msg: returnError(err) });
     });
 });
 
 // CREATE
 router.post('/', postLimiter, (req, res) => {
+  const { name, email, age, gender } = req.body;
 
   // Validate the age
   let age = sanitizeAge(req.body.age);
@@ -48,15 +49,15 @@ router.post('/', postLimiter, (req, res) => {
   else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
 
   let newUser = new User({
-    name: sanitizeName(req.body.name),
-    email: sanitizeEmail(req.body.email),
-    age: sanitizeAge(req.body.age),
-    gender: sanitizeGender(req.body.gender)
+    name: sanitizeName(name),
+    email: sanitizeEmail(email),
+    age: sanitizeAge(age),
+    gender: sanitizeGender(gender)
   });
 
   newUser.save()
     .then((result) => {
-      res.json({
+      return res.status(200).json({
         success: true,
         msg: `Successfully added!`,
         result: {
@@ -69,45 +70,27 @@ router.post('/', postLimiter, (req, res) => {
       });
     })
     .catch((err) => {
-      if (err.errors) {
-        if (err.errors.name) {
-          res.status(400).json({ success: false, msg: err.errors.name.message });
-          return;
-        }
-        if (err.errors.email) {
-          res.status(400).json({ success: false, msg: err.errors.email.message });
-          return;
-        }
-        if (err.errors.age) {
-          res.status(400).json({ success: false, msg: err.errors.age.message });
-          return;
-        }
-        if (err.errors.gender) {
-          res.status(400).json({ success: false, msg: err.errors.gender.message });
-          return;
-        }
-        // Show failed if all else fails for some reasons
-        res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-      }
+      return res.status(400).json({ success: false, msg: returnError(err) });
     });
 });
 
 // UPDATE
 router.put('/:id', (req, res) => {
-
+  const { id } = req.params;
+  const { name, email, age, gender } = req.body;
   // Validate the age
   let age = sanitizeAge(req.body.age);
   if (age < 5 && age != '') return res.status(403).json({ success: false, msg: `You're too young for this.` });
   else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
 
   let updatedUser = {
-    name: sanitizeName(req.body.name),
-    email: sanitizeEmail(req.body.email),
-    age: sanitizeAge(req.body.age),
-    gender: sanitizeGender(req.body.gender)
+    name: sanitizeName(name),
+    email: sanitizeEmail(email),
+    age: sanitizeAge(age),
+    gender: sanitizeGender(gender)
   };
 
-  User.findOneAndUpdate({ _id: req.params.id }, updatedUser, { runValidators: true, context: 'query' })
+  User.findOneAndUpdate({ _id: id }, updatedUser, { runValidators: true, context: 'query' })
     .then((oldResult) => {
       User.findOne({ _id: req.params.id })
         .then((newResult) => {
@@ -124,38 +107,18 @@ router.put('/:id', (req, res) => {
           });
         })
         .catch((err) => {
-          res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-          return;
+          return res.status(500).json({ success: false, msg: returnError(err) });
         });
     })
     .catch((err) => {
-      if (err.errors) {
-        if (err.errors.name) {
-          res.status(400).json({ success: false, msg: err.errors.name.message });
-          return;
-        }
-        if (err.errors.email) {
-          res.status(400).json({ success: false, msg: err.errors.email.message });
-          return;
-        }
-        if (err.errors.age) {
-          res.status(400).json({ success: false, msg: err.errors.age.message });
-          return;
-        }
-        if (err.errors.gender) {
-          res.status(400).json({ success: false, msg: err.errors.gender.message });
-          return;
-        }
-        // Show failed if all else fails for some reasons
-        res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-      }
+      return res.status(400).json({ success: false, msg: returnError(err) });
     });
 });
 
 // DELETE
 router.delete('/:id', (req, res) => {
-
-  User.findByIdAndRemove(req.params.id)
+  const { id } = req.params;
+  User.findByIdAndRemove(id)
     .then((result) => {
       res.json({
         success: true,
@@ -170,7 +133,7 @@ router.delete('/:id', (req, res) => {
       });
     })
     .catch((err) => {
-      res.status(404).json({ success: false, msg: 'Nothing to delete.' });
+      return res.status(404).json({ success: false, msg: 'Nothing to delete.' });
     });
 });
 
@@ -192,3 +155,21 @@ sanitizeGender = (gender) => {
   // Return empty if it's neither of the two
   return (gender === 'm' || gender === 'f') ? gender : '';
 }
+
+returnError = (err) => {
+  let errorMessage = `Something went wrong. ${err}`;
+  
+  if (err.errors) {
+    if (err.errors.name) {
+      errorMessage = err.errors.name.message;
+    } else if (err.errors.email) {
+      errorMessage = err.errors.email.message;
+    } else if (err.errors.age) {
+      errorMessage = err.errors.age.message;
+    } else if (err.errors.gender) {
+      errorMessage = err.errors.gender.message;
+    }
+  }
+  
+  return errorMessage;
+};

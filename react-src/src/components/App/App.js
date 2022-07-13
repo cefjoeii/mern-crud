@@ -1,4 +1,4 @@
-import React, { useEffect, Component } from 'react';
+import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -6,8 +6,8 @@ import io from 'socket.io-client';
 import TableUser from '../TableUser/TableUser';
 import ModalUser from '../ModalUser/ModalUser';
 
-import logo from '../../mern-logo.png';
-import shirts from '../../shirts.png';
+/*import logo from '../../mern-logo.png';*/
+/*import shirts from '../../shirts.png';*/
 import './App.css';
 
 class App extends Component {
@@ -72,43 +72,45 @@ class App extends Component {
   }
 
   render() {
-    let peopleOnline = this.state.online - 1;
+   /* let peopleOnline = this.state.online - 1;
     let onlineText = "";
-
+    let online = 0;
+ 
     if (peopleOnline < 1) {
       onlineText = 'No one else is online';
     } else {
       onlineText = peopleOnline > 1 ? `${online - 1} people are online` : `${online - 1} person is online`;
     }
-
+*/
     return (
       <div>
         <div className='App'>
           <div className='App-header'>
-            <img src={logo} className='App-logo' alt='logo' />
-            <h1 className='App-intro'>MERN CRUD</h1>
-            <p>
-              A simple records system using MongoDB, Express.js, React.js, and Node.js. REST API was implemented on the back-end.
+          
+           {/* <img src={logo} className='App-logo' alt='logo' /> */}
+            <h1 className='App-intro'>Sistema de Gestion del Cementerio de Sayausi</h1>
+            {/*<p>
+              Sistema de Gestion .
               <br/>
-              CREATE, READ, UPDATE, and DELETE operations are updated in real-time to online users using Socket.io.
-            </p>
-            <a className='shirts' href='https://www.teepublic.com/en-au/user/codeweario/albums/4812-tech-stacks' target='_blank' rel='noopener noreferrer'>
+              JS - SOFTWARE.
+    </p>*/
+            /*<a className='shirts' href='https://www.teepublic.com/en-au/user/codeweario/albums/4812-tech-stacks' target='_blank' rel='noopener noreferrer'>
               <img src={shirts} alt='Buy MERN Shirts' />
-              <br/>Buy MERN Shirts
-            </a>
+    <br/>Buy MERN Shirts
+    </a>*/}
           </div>
         </div>
         <Container>
           <ModalUser
-            headerTitle='Add User'
-            buttonTriggerTitle='Add New'
-            buttonSubmitTitle='Add'
-            buttonColor='green'
+            headerTitle='Anadir Usuario'
+            buttonTriggerTitle='Anadir Nuevo'
+            buttonSubmitTitle='Anadir'
+            buttonColor='black'
             onUserAdded={this.handleUserAdded}
             server={this.server}
             socket={this.socket}
           />
-          <em id='online'>{onlineText}</em>
+  {/*        <em id='online'>{onlineText}</em> */}
           <TableUser
             onUserUpdated={this.handleUserUpdated}
             onUserDeleted={this.handleUserDeleted}

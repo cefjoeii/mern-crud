@@ -18,19 +18,19 @@ class TableUser extends Component {
         <Table.Cell>{user.gender}</Table.Cell>
         <Table.Cell>
           <ModalUser
-            headerTitle='Edit User'
-            buttonTriggerTitle='Edit'
-            buttonSubmitTitle='Save'
-            buttonColor='blue'
+            headerTitle='Editar Usuario'
+            buttonTriggerTitle='Editar'
+            buttonSubmitTitle='Guardar'
+            buttonColor='gray'
             userID={user._id}
             onUserUpdated={this.props.onUserUpdated}
             server={this.props.server}
             socket={this.props.socket}
           />
           <ModalConfirmDelete
-            headerTitle='Delete User'
-            buttonTriggerTitle='Delete'
-            buttonColor='black'
+            headerTitle='Elimiar Usuario'
+            buttonTriggerTitle='Eliminar'
+            buttonColor='white'
             user={user}
             onUserDeleted={this.props.onUserDeleted}
             server={this.props.server}
@@ -47,11 +47,11 @@ class TableUser extends Component {
       <Table singleLine>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Email</Table.HeaderCell>
-            <Table.HeaderCell>Age</Table.HeaderCell>
-            <Table.HeaderCell>Gender</Table.HeaderCell>
-            <Table.HeaderCell>Actions</Table.HeaderCell>
+            <Table.HeaderCell>Nombre</Table.HeaderCell>
+            <Table.HeaderCell>Correo</Table.HeaderCell>
+            <Table.HeaderCell>Edad</Table.HeaderCell>
+            <Table.HeaderCell>Genero</Table.HeaderCell>
+            <Table.HeaderCell>Acciones</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

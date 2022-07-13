@@ -11,7 +11,7 @@ class ModalUser extends Component {
         trigger={<Button color={this.props.buttonColor}>{this.props.buttonTriggerTitle}</Button>}
         dimmer='inverted'
         size='tiny'
-        closeIcon='close'
+        closeIcon='open'
       >
         <Modal.Header>{this.props.headerTitle}</Modal.Header>
         <Modal.Content>

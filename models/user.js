@@ -6,7 +6,7 @@ const nameValidator = [
   validate({
     validator: 'isLength',
     arguments: [0, 40],
-    message: 'Name must not exceed {ARGS[1]} characters.'
+    message: 'Nombre no debe exceder {ARGS[1]} caracteres.'
   })
 ];
 
@@ -14,11 +14,11 @@ const emailValidator = [
   validate({
     validator: 'isLength',
     arguments: [0, 40],
-    message: 'Email must not exceed {ARGS[1]} characters.'
+    message: 'Correo no debe exceder {ARGS[1]} caracteres.'
   }),
   validate({
     validator: 'isEmail',
-    message: 'Email must be valid.'
+    message: 'Correo debe ser valido.'
   })
 ];
 
@@ -34,12 +34,12 @@ const genderValidator = [
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Name is required.'],
+    required: [true, 'Nombre es requerido.'],
     validate: nameValidator
   },
   email: {
     type: String,
-    required: [true, 'Email is required.'],
+    required: [true, 'Correo es requerido.'],
     unique: true,
     validate: emailValidator
   },

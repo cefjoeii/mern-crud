@@ -50,11 +50,11 @@ class ModalConfirmDelete extends Component {
       >
         <Modal.Header>{this.props.headerTitle}</Modal.Header>
         <Modal.Content>
-          <p>Are you sure you want to delete <strong>{this.props.user.name}</strong>?</p>
+          <p>Esta seguro de eliminar <strong>{this.props.user.name}</strong>?</p>
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={this.handleSubmit} data-userID={this.props.user._id} color='red'>Yes</Button>
-          <Button onClick={this.handleClose} color='black'>No</Button>
+          <Button onClick={this.handleSubmit} data-userID={this.props.user._id} color='red'>Si</Button>
+          <Button onClick={this.handleClose} color='red'>No</Button>
           </Modal.Actions>
       </Modal>
     );

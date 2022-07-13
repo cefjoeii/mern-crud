@@ -3,9 +3,8 @@ import { Message, Button, Form, Select } from 'semantic-ui-react';
 import axios from 'axios';
 
 const genderOptions = [
-  { key: 'm', text: 'Male', value: 'm' },
-  { key: 'f', text: 'Female', value: 'f' },
-  { key: 'o', text: 'Do Not Disclose', value: 'o' }
+  { key: 'M', text: 'Masculino', value: 'M' },
+  { key: 'F', text: 'Femenino', value: 'F' },
 ]
 
 class FormUser extends Component {
@@ -129,9 +128,9 @@ class FormUser extends Component {
     return (
       <Form className={formClassName} onSubmit={this.handleSubmit}>
         <Form.Input
-          label='Name'
+          label='Nombre'
           type='text'
-          placeholder='Elon Musk'
+          placeholder='Pepito Perez'
           name='name'
           maxLength='40'
           required
@@ -139,9 +138,9 @@ class FormUser extends Component {
           onChange={this.handleInputChange}
         />
         <Form.Input
-          label='Email'
+          label='Correo'
           type='email'
-          placeholder='elonmusk@tesla.com'
+          placeholder='pepito@sayausi.com'
           name='email'
           maxLength='40'
           required
@@ -150,7 +149,7 @@ class FormUser extends Component {
         />
         <Form.Group widths='equal'>
           <Form.Input
-            label='Age'
+            label='Edad'
             type='number'
             placeholder='18'
             min={5}
@@ -161,23 +160,23 @@ class FormUser extends Component {
           />
           <Form.Field
             control={Select}
-            label='Gender'
+            label='Genero'
             options={genderOptions}
-            placeholder='Gender'
+            placeholder='Genero'
             value={this.state.gender}
             onChange={this.handleSelectChange}
           />
         </Form.Group>
         <Message
           success
-          color='green'
-          header='Nice one!'
+          color='red'
+          header='Mensaje:'
           content={formSuccessMessage}
-        />
+    /> 
         <Message
           warning
           color='yellow'
-          header='Woah!'
+          header='Advertencia!'
           content={formErrorMessage}
         />
         <Button color={this.props.buttonColor} floated='right'>{this.props.buttonSubmitTitle}</Button>

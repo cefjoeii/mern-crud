@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       res.json(result);
     })
     .catch((err) => {
-      res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
+      res.status(500).json({ success: false, msg: `Algo salio mal. ${err}` });
     });
 });
 
@@ -58,7 +58,7 @@ router.post('/', postLimiter, (req, res) => {
     .then((result) => {
       res.json({
         success: true,
-        msg: `Successfully added!`,
+        msg: `Registro Agregado!`,
         result: {
           _id: result._id,
           name: result.name,
@@ -113,7 +113,7 @@ router.put('/:id', (req, res) => {
         .then((newResult) => {
           res.json({
             success: true,
-            msg: `Successfully updated!`,
+            msg: `Registro Actualizado!`,
             result: {
               _id: newResult._id,
               name: newResult.name,
@@ -159,7 +159,7 @@ router.delete('/:id', (req, res) => {
     .then((result) => {
       res.json({
         success: true,
-        msg: `It has been deleted.`,
+        msg: `Registro eliminado.`,
         result: {
           _id: result._id,
           name: result.name,
@@ -170,7 +170,7 @@ router.delete('/:id', (req, res) => {
       });
     })
     .catch((err) => {
-      res.status(404).json({ success: false, msg: 'Nothing to delete.' });
+      res.status(404).json({ success: false, msg: 'Nada para eliminar.' });
     });
 });
 
@@ -190,5 +190,5 @@ sanitizeAge = (age) => {
 }
 sanitizeGender = (gender) => {
   // Return empty if it's neither of the two
-  return (gender === 'm' || gender === 'f') ? gender : '';
+  return (gender === 'M' || gender === 'F') ? gender : '';
 }

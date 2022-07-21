@@ -30,7 +30,7 @@ class TableUser extends Component {
           />
           <ModalConfirmDelete
             headerTitle='Eliminar Usuario'
-            buttonTriggerTitle='Elimiar'
+            buttonTriggerTitle='Eliminar'
             buttonColor='white'
             user={user}
             onUserDeleted={this.props.onUserDeleted}

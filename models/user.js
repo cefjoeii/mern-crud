@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Correo es requerido.'],
-    unique: true,
+    unique: false,
     validate: emailValidator
   },
   age: {

@@ -13,6 +13,7 @@ class FormUser extends Component {
     super(props);
     
     this.state = {
+      cedula: '',
       name: '',
       email: '',
       age: '',
@@ -33,6 +34,7 @@ class FormUser extends Component {
       axios.get(`${this.props.server}/api/users/${this.props.userID}`)
       .then((response) => {
         this.setState({
+          cedula: response.data.cedula,
           name: response.data.name,
           email: response.data.email,
           age: response.data.age ?? '',
@@ -62,6 +64,7 @@ class FormUser extends Component {
     e.preventDefault();
 
     const user = {
+      cedula: this.state.cedula,
       name: this.state.name,
       email: this.state.email,
       age: this.state.age,
@@ -87,6 +90,7 @@ class FormUser extends Component {
 
       if (!this.props.userID) {
         this.setState({
+          cedula: '',
           name: '',
           email: '',
           age: '',
@@ -127,6 +131,16 @@ class FormUser extends Component {
 
     return (
       <Form className={formClassName} onSubmit={this.handleSubmit}>
+        <Form.Input
+          label='Cedula'
+          type='text'
+          placeholder='0104751987'
+          name='cedula'
+          maxLength='10'
+          required
+          value={this.state.cedula}
+          onChange={this.handleInputChange}
+        />
         <Form.Input
           label='Nombre'
           type='text'

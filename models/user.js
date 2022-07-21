@@ -30,8 +30,18 @@ const genderValidator = [
   // TODO: Make some validations here...
 ];
 
+const cedulaValidator = [
+  // TODO: Make some validations here...
+];
+
+
 // Define the database model
 const UserSchema = new mongoose.Schema({
+  cedula:{
+    type: String,
+    required: [true, 'Cedula es obligatorio.'],
+    validate: cedulaValidator
+  },
   name: {
     type: String,
     required: [true, 'Nombre es requerido.'],

@@ -48,6 +48,7 @@ router.post('/', postLimiter, (req, res) => {
   else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
 
   let newUser = new User({
+    cedula: req.body.cedula,
     name: sanitizeName(req.body.name),
     email: sanitizeEmail(req.body.email),
     age: sanitizeAge(req.body.age),
@@ -61,6 +62,7 @@ router.post('/', postLimiter, (req, res) => {
         msg: `Registro Agregado!`,
         result: {
           _id: result._id,
+          cedula: result.cedula,
           name: result.name,
           email: result.email,
           age: result.age,
@@ -70,6 +72,10 @@ router.post('/', postLimiter, (req, res) => {
     })
     .catch((err) => {
       if (err.errors) {
+        if (err.errors.cedula) {
+          res.status(400).json({ success: false, msg: err.errors.cedula.message });
+          return;
+        }
         if (err.errors.name) {
           res.status(400).json({ success: false, msg: err.errors.name.message });
           return;
@@ -87,7 +93,7 @@ router.post('/', postLimiter, (req, res) => {
           return;
         }
         // Show failed if all else fails for some reasons
-        res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
+        res.status(500).json({ success: false, msg: `Algo esta mal ${err}` });
       }
     });
 });
@@ -101,6 +107,7 @@ router.put('/:id', (req, res) => {
   else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
 
   let updatedUser = {
+    cedula: req.body.cedula,
     name: sanitizeName(req.body.name),
     email: sanitizeEmail(req.body.email),
     age: sanitizeAge(req.body.age),
@@ -116,6 +123,7 @@ router.put('/:id', (req, res) => {
             msg: `Registro Actualizado!`,
             result: {
               _id: newResult._id,
+              cedula: newResult.cedula,
               name: newResult.name,
               email: newResult.email,
               age: newResult.age,
@@ -130,6 +138,10 @@ router.put('/:id', (req, res) => {
     })
     .catch((err) => {
       if (err.errors) {
+        if (err.errors.cedula) {
+          res.status(400).json({ success: false, msg: err.errors.cedula.message });
+          return;
+        }
         if (err.errors.name) {
           res.status(400).json({ success: false, msg: err.errors.name.message });
           return;
@@ -162,6 +174,7 @@ router.delete('/:id', (req, res) => {
         msg: `Registro eliminado.`,
         result: {
           _id: result._id,
+          cedula: result.cedula,
           name: result.name,
           email: result.email,
           age: result.age,

@@ -21,11 +21,11 @@ mongoose.connect(config.db, {
 let db = mongoose.connection;
 
 db.on('open', () => {
-  console.log('Connected to the database.');
+  console.log('Conectado a la base de datos.');
 });
 
 db.on('error', (err) => {
-  console.log(`Database error: ${err}`);
+  console.log(`Error en la base de datos: ${err}`);
 });
 
 // Instantiate express

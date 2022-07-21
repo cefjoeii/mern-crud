@@ -12,6 +12,7 @@ class TableUser extends Component {
 
     users = users.map((user) => 
       <Table.Row key={user._id}>
+        <Table.Cell>{user.cedula}</Table.Cell>
         <Table.Cell>{user.name}</Table.Cell>
         <Table.Cell>{user.email}</Table.Cell>
         <Table.Cell>{user.age}</Table.Cell>
@@ -21,15 +22,15 @@ class TableUser extends Component {
             headerTitle='Editar Usuario'
             buttonTriggerTitle='Editar'
             buttonSubmitTitle='Guardar'
-            buttonColor='gray'
+            buttonColor='red'
             userID={user._id}
             onUserUpdated={this.props.onUserUpdated}
             server={this.props.server}
             socket={this.props.socket}
           />
           <ModalConfirmDelete
-            headerTitle='Elimiar Usuario'
-            buttonTriggerTitle='Eliminar'
+            headerTitle='Eliminar Usuario'
+            buttonTriggerTitle='Elimiar'
             buttonColor='white'
             user={user}
             onUserDeleted={this.props.onUserDeleted}
@@ -47,6 +48,7 @@ class TableUser extends Component {
       <Table singleLine>
         <Table.Header>
           <Table.Row>
+            <Table.HeaderCell>Cedula</Table.HeaderCell>
             <Table.HeaderCell>Nombre</Table.HeaderCell>
             <Table.HeaderCell>Correo</Table.HeaderCell>
             <Table.HeaderCell>Edad</Table.HeaderCell>

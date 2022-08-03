@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const unique = require('mongoose-unique-validator');
 const validate = require('mongoose-validator');
 
-const nameValidator = [
+const nombreValidador = [
   validate({
     validator: 'isLength',
     arguments: [0, 40],
@@ -10,57 +10,40 @@ const nameValidator = [
   })
 ];
 
-const emailValidator = [
-  validate({
-    validator: 'isLength',
-    arguments: [0, 40],
-    message: 'Correo no debe exceder {ARGS[1]} caracteres.'
-  }),
-  validate({
-    validator: 'isEmail',
-    message: 'Correo debe ser valido.'
-  })
-];
-
-const ageValidator = [
-  // TODO: Make some validations here...
-];
-
-const genderValidator = [
-  // TODO: Make some validations here...
-];
-
-const cedulaValidator = [
-  // TODO: Make some validations here...
-];
-
 
 // Define the database model
 const UserSchema = new mongoose.Schema({
+  nombre: {
+    type: String,
+    required: [true, 'Nombre es requerido.'],
+    validate: nombreValidador
+  },
+  apellido: {
+    type: String,
+    required: [true, 'Apellido es requerido.'],
+  },
+  fecha: {
+    type: Date,
+    required: [true, 'Fecha es requerido.']
+  },
   cedula:{
     type: String,
     required: [true, 'Cedula es obligatorio.'],
-    validate: cedulaValidator
   },
-  name: {
+  responsable: {
     type: String,
-    required: [true, 'Nombre es requerido.'],
-    validate: nameValidator
+    required: [true, 'Responsable es requerido.'],
   },
-  email: {
+  telefono: {
     type: String,
-    required: [true, 'Correo es requerido.'],
-    unique: false,
-    validate: emailValidator
+    required: [true, 'Telefono es requerido.'],
   },
-  age: {
-    type: Number,
-    validate: ageValidator
-  },
-  gender: {
-    type: String,
-    validate: genderValidator
-  }
+  estado: {
+    type: Boolean,
+    default:true,
+    required:[true, 'Estado es requerido.'],
+},
+
 });
 
 // Use the unique validator plugin

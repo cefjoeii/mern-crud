@@ -10,7 +10,7 @@ const User = require('../models/user');
 const minutes = 5;
 const postLimiter = new RateLimit({
   windowMs: minutes * 60 * 1000, // milliseconds
-  max: 1000, // Limit each IP to 100 requests per windowMs 
+  max: 100, // Limit each IP to 100 requests per windowMs 
   delayMs: 0, // Disable delaying - full speed until the max limit is reached 
   handler: (req, res) => {
     res.status(429).json({ success: false, msg: `You made too many requests. Please try again after ${minutes} minutes.` });
@@ -42,17 +42,14 @@ router.get('/', (req, res) => {
 // CREATE
 router.post('/', postLimiter, (req, res) => {
 
-  // Validate the age
-  let age = sanitizeAge(req.body.age);
-  if (age < 5 && age != '') return res.status(403).json({ success: false, msg: `You're too young for this.` });
-  else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
-
   let newUser = new User({
-    cedula: req.body.cedula,
-    name: sanitizeName(req.body.name),
-    email: sanitizeEmail(req.body.email),
-    age: sanitizeAge(req.body.age),
-    gender: sanitizeGender(req.body.gender)
+    nombre:         req.body.nombre,
+    apellido:       req.body.apellido,
+    fecha:          req.body.fecha,
+    cedula:         req.body.cedula,
+    responsable:    req.body.responsable,
+    telefono:       req.body.telefono,
+    estado:         req.body.estado
   });
 
   newUser.save()
@@ -61,35 +58,46 @@ router.post('/', postLimiter, (req, res) => {
         success: true,
         msg: `Registro Agregado!`,
         result: {
-          _id: result._id,
-          cedula: result.cedula,
-          name: result.name,
-          email: result.email,
-          age: result.age,
-          gender: result.gender
+          _id:      result._id,
+          nombre:   result.nombre,
+          apellido: result.apellido,
+          fecha:    result.fecha,
+          cedula:   result.cedula,
+          responsable:   result.responsable,
+          telefono:   result.telefono,     
+          estado:   result.estado
         }
       });
     })
     .catch((err) => {
+      console.log(err);
       if (err.errors) {
+        if (err.errors.nombre) {
+          res.status(400).json({ success: false, msg: err.errors.nombre.message });
+          return;
+        }
+        if (err.errors.apellido) {
+          res.status(400).json({ success: false, msg: err.errors.apellido.message });
+          return;
+        }
+        if (err.errors.fecha) {
+          res.status(400).json({ success: false, msg: err.errors.fecha.message });
+          return;
+        }
         if (err.errors.cedula) {
           res.status(400).json({ success: false, msg: err.errors.cedula.message });
           return;
         }
-        if (err.errors.name) {
-          res.status(400).json({ success: false, msg: err.errors.name.message });
+        if (err.errors.responsable) {
+          res.status(400).json({ success: false, msg: err.errors.responsable.message });
           return;
         }
-        if (err.errors.email) {
-          res.status(400).json({ success: false, msg: err.errors.email.message });
+        if (err.errors.telefono) {
+          res.status(400).json({ success: false, msg: err.errors.telefono.message });
           return;
         }
-        if (err.errors.age) {
-          res.status(400).json({ success: false, msg: err.errors.age.message });
-          return;
-        }
-        if (err.errors.gender) {
-          res.status(400).json({ success: false, msg: err.errors.gender.message });
+        if (err.errors.estado) {
+          res.status(400).json({ success: false, msg: err.errors.estado.message });
           return;
         }
         // Show failed if all else fails for some reasons
@@ -101,17 +109,15 @@ router.post('/', postLimiter, (req, res) => {
 // UPDATE
 router.put('/:id', (req, res) => {
 
-  // Validate the age
-  let age = sanitizeAge(req.body.age);
-  if (age < 5 && age != '') return res.status(403).json({ success: false, msg: `You're too young for this.` });
-  else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
 
   let updatedUser = {
-    cedula: req.body.cedula,
-    name: sanitizeName(req.body.name),
-    email: sanitizeEmail(req.body.email),
-    age: sanitizeAge(req.body.age),
-    gender: sanitizeGender(req.body.gender)
+    nombre:         req.body.nombre,
+    apellido:       req.body.apellido,
+    fecha:          req.body.fecha,
+    cedula:         req.body.cedula,
+    responsable:    req.body.responsable,
+    telefono:       req.body.telefono,
+    estado:         req.body.estado
   };
 
   User.findOneAndUpdate({ _id: req.params.id }, updatedUser, { runValidators: true, context: 'query' })
@@ -123,43 +129,53 @@ router.put('/:id', (req, res) => {
             msg: `Registro Actualizado!`,
             result: {
               _id: newResult._id,
-              cedula: newResult.cedula,
-              name: newResult.name,
-              email: newResult.email,
-              age: newResult.age,
-              gender: newResult.gender
-            }
+              nombre:   newResult.nombre,
+              apellido: newResult.apellido,
+              fecha:    newResult.fecha,
+              cedula:   newResult.cedula,
+              responsable:   newResult.responsable,
+              telefono:   newResult.telefono,        
+              estado:   newResult.estado
+                }
           });
         })
         .catch((err) => {
-          res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
+          res.status(500).json({ success: false, msg: `Algo saliooooo mal!. ${err}` });
           return;
         });
     })
     .catch((err) => {
       if (err.errors) {
+        if (err.errors.nombre) {
+          res.status(400).json({ success: false, msg: err.errors.nombre.message });
+          return;
+        }
+        if (err.errors.apellido) {
+          res.status(400).json({ success: false, msg: err.errors.apellido.message });
+          return;
+        }
+        if (err.errors.fecha) {
+          res.status(400).json({ success: false, msg: err.errors.fecha.message });
+          return;
+        }
         if (err.errors.cedula) {
           res.status(400).json({ success: false, msg: err.errors.cedula.message });
           return;
         }
-        if (err.errors.name) {
-          res.status(400).json({ success: false, msg: err.errors.name.message });
+        if (err.errors.responsable) {
+          res.status(400).json({ success: false, msg: err.errors.edad.message });
           return;
         }
-        if (err.errors.email) {
-          res.status(400).json({ success: false, msg: err.errors.email.message });
+        if (err.errors.telefono) {
+          res.status(400).json({ success: false, msg: err.errors.telefono.message });
           return;
         }
-        if (err.errors.age) {
-          res.status(400).json({ success: false, msg: err.errors.age.message });
-          return;
-        }
-        if (err.errors.gender) {
-          res.status(400).json({ success: false, msg: err.errors.gender.message });
+        if (err.errors.estado) {
+          res.status(400).json({ success: false, msg: err.errors.telefono.message });
           return;
         }
         // Show failed if all else fails for some reasons
-        res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
+        res.status(500).json({ success: false, msg: `Algo salios mal. ${err}` });
       }
     });
 });
@@ -174,11 +190,13 @@ router.delete('/:id', (req, res) => {
         msg: `Registro eliminado.`,
         result: {
           _id: result._id,
+          nombre: result.nombre,
+          apellido: result.apellido,
+          fecha: result.fecha,
           cedula: result.cedula,
-          name: result.name,
-          email: result.email,
-          age: result.age,
-          gender: result.gender
+          responsable: result.responsable,
+          telefono: result.telefono,
+          estado: result.estado
         }
       });
     })
@@ -190,18 +208,23 @@ router.delete('/:id', (req, res) => {
 module.exports = router;
 
 // Minor sanitizing to be invoked before reaching the database
-sanitizeName = (name) => {
-  return stringCapitalizeName(name);
+ /*sanitizeNombre = (nombre) => {
+  return stringCapitalizeName(nombre);
 }
-sanitizeEmail = (email) => {
-  return email.toLowerCase();
+
+sanitizeApellido = (apellido) => {
+  return stringCapitalizeName(apellido);
 }
-sanitizeAge = (age) => {
+
+sanitizeCorreo = (correo) => {
+  return correo.toLowerCase();
+}
+sanitizeEdad = (edad) => {
   // Return empty if age is non-numeric
-  if (isNaN(age) && age != '') return '';
-  return (age === '') ? age : parseInt(age);
+  if (isNaN(edad) && edad != '') return '';
+  return (edad === '') ? edad : parseInt(edad);
 }
-sanitizeGender = (gender) => {
+sanitizeGenero = (genero) => {
   // Return empty if it's neither of the two
-  return (gender === 'M' || gender === 'F') ? gender : '';
-}
+  return (genero === 'M' || genero === 'F') ? genero : '';
+}*/

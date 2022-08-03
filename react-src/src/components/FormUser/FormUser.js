@@ -2,22 +2,23 @@ import React, { Component } from 'react';
 import { Message, Button, Form, Select } from 'semantic-ui-react';
 import axios from 'axios';
 
-const genderOptions = [
-  { key: 'M', text: 'Masculino', value: 'M' },
-  { key: 'F', text: 'Femenino', value: 'F' },
+const estadoOptions = [
+  { key: true, text: 'Pagado', value: true },
+  { key: false, text: 'No pagado', value: false },
 ]
 
 class FormUser extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
+      nombre: '',
+      apellido: '',
+      fecha: '',
       cedula: '',
-      name: '',
-      email: '',
-      age: '',
-      gender: '',
+      responsable: '',
+      telefono: '',
       formClassName: '',
       formSuccessMessage: '',
       formErrorMessage: ''
@@ -31,19 +32,23 @@ class FormUser extends Component {
   componentWillMount() {
     // Fill in the form with the appropriate data if user id is provided
     if (this.props.userID) {
+      console.log(this.props.userID)
+      console.log(this.props.server)
       axios.get(`${this.props.server}/api/users/${this.props.userID}`)
-      .then((response) => {
-        this.setState({
-          cedula: response.data.cedula,
-          name: response.data.name,
-          email: response.data.email,
-          age: response.data.age ?? '',
-          gender: response.data.gender,
+        .then((response) => {
+          this.setState({
+            nombre: response.data.nombre,
+            apellido: response.data.apellido,
+            fecha: response.data.fecha,
+            cedula: response.data.cedula,
+            responsable: response.data.responsable,
+            telefono: response.data.telefono,
+            estado: response.data.estado
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     }
   }
 
@@ -51,12 +56,11 @@ class FormUser extends Component {
     const target = e.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
     this.setState({ [name]: value });
   }
 
   handleSelectChange(e, data) {
-    this.setState({ gender: data.value });
+    this.setState({ estado: data.value });
   }
 
   handleSubmit(e) {
@@ -64,11 +68,13 @@ class FormUser extends Component {
     e.preventDefault();
 
     const user = {
+      nombre: this.state.nombre,
+      apellido: this.state.apellido,
+      fecha: this.state.fecha,
       cedula: this.state.cedula,
-      name: this.state.name,
-      email: this.state.email,
-      age: this.state.age,
-      gender: this.state.gender
+      responsable: this.state.responsable,
+      telefono: this.state.telefono,
+      estado: this.state.estado
     }
 
     // Acknowledge that if the user id is provided, we're updating via PUT
@@ -82,45 +88,44 @@ class FormUser extends Component {
       url: `${this.props.server}/api/users/${params}`,
       data: user
     })
-    .then((response) => {
-      this.setState({
-        formClassName: 'success',
-        formSuccessMessage: response.data.msg
-      });
-
-      if (!this.props.userID) {
+      .then((response) => {
         this.setState({
-          cedula: '',
-          name: '',
-          email: '',
-          age: '',
-          gender: ''
+          formClassName: 'success',
+          formSuccessMessage: response.data.msg
         });
-        this.props.onUserAdded(response.data.result);
-        this.props.socket.emit('add', response.data.result);
-      }
-      else {
-        this.props.onUserUpdated(response.data.result);
-        this.props.socket.emit('update', response.data.result);
-      }
-      
-    })
-    .catch((err) => {
-      if (err.response) {
-        if (err.response.data) {
+        if (!this.props.userID) {
+          this.setState({
+            nombre: '',
+            apellido: '',
+            fecha: '',
+            cedula: '',
+            responsable: '',
+            telefono: '',
+            estado: ''
+          });
+          this.props.onUserAdded(response.data.result);
+        }
+        else {
+          this.props.onUserUpdated(response.data.result);
+        }
+
+      })
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.data) {
+            this.setState({
+              formClassName: 'warning',
+              formErrorMessage: err.response.data.msg
+            });
+          }
+        }
+        else {
           this.setState({
             formClassName: 'warning',
-            formErrorMessage: err.response.data.msg
+            formErrorMessage: 'Algo salio mal. ' + err
           });
         }
-      }
-      else {
-        this.setState({
-          formClassName: 'warning',
-          formErrorMessage: 'Something went wrong. ' + err
-        });
-      }
-    });
+      });
   }
 
   render() {
@@ -131,6 +136,38 @@ class FormUser extends Component {
 
     return (
       <Form className={formClassName} onSubmit={this.handleSubmit}>
+        <Form.Group widths='equal'>
+          <Form.Input
+            label='Nombre'
+            type='text'
+            placeholder='Pepito'
+            name='nombre'
+            maxLength='40'
+            required
+            value={this.state.nombre}
+            onChange={this.handleInputChange}
+          />
+          <Form.Input
+            label='Apellido'
+            type='text'
+            placeholder='Perez'
+            name='apellido'
+            maxLength='40'
+            required
+            value={this.state.apellido}
+            onChange={this.handleInputChange}
+          />
+        </Form.Group>
+        <Form.Input
+          label='Fecha de Defuncion'
+          name='fecha'
+          type='date'
+          maxLength='10'
+          required
+          pattern="\d{4}-\d{2}-\d{2}"
+          value={this.state.fecha.split("T")[0]}
+          onChange={this.handleInputChange}
+        />
         <Form.Input
           label='Cedula'
           type='text'
@@ -142,55 +179,43 @@ class FormUser extends Component {
           onChange={this.handleInputChange}
         />
         <Form.Input
-          label='Nombre'
+          label='Responsable'
           type='text'
-          placeholder='Pepito Perez'
-          name='name'
-          maxLength='40'
-          required
-          value={this.state.name}
+          placeholder='Nombres y Apellidos'
+          min={5}
+          max={130}
+          name='responsable'
+          value={this.state.responsable}
           onChange={this.handleInputChange}
         />
         <Form.Input
-          label='Correo'
-          type='email'
-          placeholder='pepito@sayausi.com'
-          name='email'
-          maxLength='40'
-          required
-          value={this.state.email}
+          label='Telefono'
+          type='text'
+          placeholder='Telefono'
+          min={3}
+          max={20}
+          name='telefono'
+          value={this.state.telefono}
           onChange={this.handleInputChange}
         />
-        <Form.Group widths='equal'>
-          <Form.Input
-            label='Edad'
-            type='number'
-            placeholder='18'
-            min={5}
-            max={130}
-            name='age'
-            value={this.state.age}
-            onChange={this.handleInputChange}
-          />
-          <Form.Field
-            control={Select}
-            label='Genero'
-            options={genderOptions}
-            placeholder='Genero'
-            value={this.state.gender}
-            onChange={this.handleSelectChange}
-          />
-        </Form.Group>
+        <Form.Field
+          control={Select}
+          label='Estado'
+          options={estadoOptions}
+          placeholder=''
+          value={this.state.estado}
+          onChange={this.handleSelectChange}
+        />
         <Message
           success
           color='red'
           header='Mensaje:'
           content={formSuccessMessage}
-    /> 
+        />
         <Message
           warning
           color='yellow'
-          header='Advertencia!'
+          header='Advertenciasss!'
           content={formErrorMessage}
         />
         <Button color={this.props.buttonColor} floated='right'>{this.props.buttonSubmitTitle}</Button>

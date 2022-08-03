@@ -65,6 +65,7 @@ const server = app.listen(port, () => {
 });
 
 // Set up socket.io
+/*
 const io = socket(server);
 let online = 0;
 
@@ -84,4 +85,4 @@ io.on('connection', (socket) => {
     console.log(`Online: ${online}`);
     io.emit('visitor exits', online);
   });
-});
+});*/

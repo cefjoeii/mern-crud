@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 
 import FormUser from '../FormUser/FormUser';
 
@@ -8,7 +8,10 @@ class ModalUser extends Component {
   render() {
     return (
       <Modal
-        trigger={<Button color={this.props.buttonColor}>{this.props.buttonTriggerTitle}</Button>}
+        trigger={<Button color={this.props.buttonColor}>
+        <Icon color='yellow' name='edit' size='large' />
+          {this.props.buttonTriggerTitle}
+          </Button>}
         dimmer='inverted'
         size='tiny'
         closeIcon='open'
@@ -22,7 +25,6 @@ class ModalUser extends Component {
             onUserAdded={this.props.onUserAdded}
             onUserUpdated={this.props.onUserUpdated}
             server={this.props.server}
-            socket={this.props.socket}
           />
         </Modal.Content>
       </Modal>

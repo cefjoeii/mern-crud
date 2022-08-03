@@ -1,0 +1,20 @@
+.header {
+	display: flex;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+}
+
+.icon {
+	margin-left: 10px;
+}
+
+.cell {
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+}
+
+.container{
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+  }

@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
-import io from 'socket.io-client';
-
-import TableUser from '../TableUser/TableUser';
-import ModalUser from '../ModalUser/ModalUser';
-
-/*import logo from '../../mern-logo.png';*/
-/*import shirts from '../../shirts.png';*/
 import './App.css';
+import Tablita from '../CustomTable/Tablita';
 
 class App extends Component {
   constructor() {
     super();
 
-    this.server = process.env.REACT_APP_API_URL || '';
-    this.socket = io.connect(this.server);
+    this.server = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
     this.state = {
       users: [],
@@ -31,11 +24,6 @@ class App extends Component {
   // Place socket.io code inside here
   componentDidMount() {
     this.fetchUsers();
-    this.socket.on('visitor enters', data => this.setState({ online: data }));
-    this.socket.on('visitor exits', data => this.setState({ online: data }));
-    this.socket.on('add', data => this.handleUserAdded(data));
-    this.socket.on('update', data => this.handleUserUpdated(data));
-    this.socket.on('delete', data => this.handleUserDeleted(data));
   }
 
   // Fetch data from the back-end
@@ -43,6 +31,7 @@ class App extends Component {
     axios.get(`${this.server}/api/users/`)
       .then((response) => {
         this.setState({ users: response.data });
+        
       })
       .catch((err) => {
         console.log(err);
@@ -72,16 +61,6 @@ class App extends Component {
   }
 
   render() {
-   /* let peopleOnline = this.state.online - 1;
-    let onlineText = "";
-    let online = 0;
- 
-    if (peopleOnline < 1) {
-      onlineText = 'No one else is online';
-    } else {
-      onlineText = peopleOnline > 1 ? `${online - 1} people are online` : `${online - 1} person is online`;
-    }
-*/
     return (
       <div>
         <div className='App'>
@@ -89,34 +68,16 @@ class App extends Component {
           
            {/* <img src={logo} className='App-logo' alt='logo' /> */}
             <h1 className='App-intro'>Sistema de Gestion del Cementerio de Sayausi</h1>
-            {/*<p>
-              Sistema de Gestion .
-              <br/>
-              JS - SOFTWARE.
-    </p>*/
-            /*<a className='shirts' href='https://www.teepublic.com/en-au/user/codeweario/albums/4812-tech-stacks' target='_blank' rel='noopener noreferrer'>
-              <img src={shirts} alt='Buy MERN Shirts' />
-    <br/>Buy MERN Shirts
-    </a>*/}
           </div>
         </div>
         <Container>
-          <ModalUser
-            headerTitle='Anadir Usuario'
-            buttonTriggerTitle='Anadir Nuevo'
-            buttonSubmitTitle='Anadir'
-            buttonColor='black'
+          <Tablita 
+            data={this.state.users}
+            users={this.state.users}            
             onUserAdded={this.handleUserAdded}
-            server={this.server}
-            socket={this.socket}
-          />
-  {/*        <em id='online'>{onlineText}</em> */}
-          <TableUser
             onUserUpdated={this.handleUserUpdated}
             onUserDeleted={this.handleUserDeleted}
-            users={this.state.users}
             server={this.server}
-            socket={this.socket}
           />
         </Container>
         <br />
@@ -126,3 +87,5 @@ class App extends Component {
 }
 
 export default App;
+
+

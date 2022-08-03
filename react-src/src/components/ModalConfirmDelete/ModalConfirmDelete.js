@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
 class ModalConfirmDelete extends Component {
@@ -31,7 +31,6 @@ class ModalConfirmDelete extends Component {
     .then((response) => {
       this.handleClose();
       this.props.onUserDeleted(response.data.result);
-      this.props.socket.emit('delete', response.data.result);
     })
     .catch((err) => {
       this.handleClose();
@@ -42,7 +41,10 @@ class ModalConfirmDelete extends Component {
   render() {
     return (
       <Modal
-        trigger={<Button onClick={this.handleOpen} color={this.props.buttonColor}>{this.props.buttonTriggerTitle}</Button>}
+        trigger={<Button onClick={this.handleOpen} color={this.props.buttonColor}>
+          <Icon color='red' name='delete' size='large' />
+          {this.props.buttonTriggerTitle}
+          </Button>}
         open={this.state.modalOpen}
         onClose={this.handleClose}
         dimmer='inverted'
@@ -50,7 +52,7 @@ class ModalConfirmDelete extends Component {
       >
         <Modal.Header>{this.props.headerTitle}</Modal.Header>
         <Modal.Content>
-          <p>Esta seguro de eliminar <strong>{this.props.user.name}</strong>?</p>
+          <p>Esta seguro de eliminar <strong>{this.props.user.nombre + " " + this.props.user.apellido} </strong>?</p>
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={this.handleSubmit} data-userID={this.props.user._id} color='red'>Si</Button>

@@ -1,26 +1,18 @@
 {
-  "files": {
-    "main.css": "/static/css/main.434fc269.chunk.css",
-    "main.js": "/static/js/main.3b163362.chunk.js",
-    "main.js.map": "/static/js/main.3b163362.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.d7f43681.js",
-    "runtime-main.js.map": "/static/js/runtime-main.d7f43681.js.map",
-    "static/css/2.bad41965.chunk.css": "/static/css/2.bad41965.chunk.css",
-    "static/js/2.007e6b36.chunk.js": "/static/js/2.007e6b36.chunk.js",
-    "static/js/2.007e6b36.chunk.js.map": "/static/js/2.007e6b36.chunk.js.map",
-    "static/js/3.db009aa3.chunk.js": "/static/js/3.db009aa3.chunk.js",
-    "static/js/3.db009aa3.chunk.js.map": "/static/js/3.db009aa3.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.bad41965.chunk.css.map": "/static/css/2.bad41965.chunk.css.map",
-    "static/css/main.434fc269.chunk.css.map": "/static/css/main.434fc269.chunk.css.map",
-    "static/js/2.007e6b36.chunk.js.LICENSE.txt": "/static/js/2.007e6b36.chunk.js.LICENSE.txt",
-    "static/media/semantic.min.css": "/static/media/outline-icons.ddae9b1b.woff"
-  },
-  "entrypoints": [
-    "static/js/runtime-main.d7f43681.js",
-    "static/css/2.bad41965.chunk.css",
-    "static/js/2.007e6b36.chunk.js",
-    "static/css/main.434fc269.chunk.css",
-    "static/js/main.3b163362.chunk.js"
-  ]
+  "main.css": "/static/css/main.c62058a1.chunk.css",
+  "main.js": "/static/js/main.62da5645.chunk.js",
+  "main.js.map": "/static/js/main.62da5645.chunk.js.map",
+  "static/js/1.1f6a0f36.chunk.js": "/static/js/1.1f6a0f36.chunk.js",
+  "static/js/1.1f6a0f36.chunk.js.map": "/static/js/1.1f6a0f36.chunk.js.map",
+  "static/css/2.74c5742d.chunk.css": "/static/css/2.74c5742d.chunk.css",
+  "static/js/2.87d425a2.chunk.js": "/static/js/2.87d425a2.chunk.js",
+  "static/js/2.87d425a2.chunk.js.map": "/static/js/2.87d425a2.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.968f7251.js",
+  "runtime~main.js.map": "/static/js/runtime~main.968f7251.js.map",
+  "static/media/semantic.min.css": "/static/media/flags.9c74e172.png",
+  "static/css/main.c62058a1.chunk.css.map": "/static/css/main.c62058a1.chunk.css.map",
+  "static/css/2.74c5742d.chunk.css.map": "/static/css/2.74c5742d.chunk.css.map",
+  "index.html": "/index.html",
+  "precache-manifest.72dbb958d4e9f384094596a37c7d4c33.js": "/precache-manifest.72dbb958d4e9f384094596a37c7d4c33.js",
+  "service-worker.js": "/service-worker.js"
 }

@@ -9,7 +9,7 @@ class App extends Component {
     super();
 
     // this.server = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-    this.server = process.env.REACT_APP_API_URL || 'https://cementeriosayausi.herokuapp.com';
+    this.server = process.env.REACT_APP_API_URL || 'http://cementeriosayausi.herokuapp.com';
     this.state = {
       users: [],
       online: 0

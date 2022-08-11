@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
-import 'dotenv/config' 
 import './App.css';
 import Tablita from '../CustomTable/Tablita';
 
@@ -9,7 +8,8 @@ class App extends Component {
   constructor() {
     super();
 
-     this.server = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+     //this.server = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+   // this.server = process.env.REACT_APP_API_URL || 'https://cementeriosayausi.herokuapp.com';
     this.state = {
       users: [],
       online: 0

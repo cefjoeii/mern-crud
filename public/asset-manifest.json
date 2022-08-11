@@ -10,9 +10,9 @@
   "runtime~main.js": "/static/js/runtime~main.968f7251.js",
   "runtime~main.js.map": "/static/js/runtime~main.968f7251.js.map",
   "static/media/semantic.min.css": "/static/media/brand-icons.a1a749e8.svg",
-  "static/css/2.74c5742d.chunk.css.map": "/static/css/2.74c5742d.chunk.css.map",
   "static/css/main.c62058a1.chunk.css.map": "/static/css/main.c62058a1.chunk.css.map",
+  "static/css/2.74c5742d.chunk.css.map": "/static/css/2.74c5742d.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.f53393c5d655f95bcb43016e99e96e72.js": "/precache-manifest.f53393c5d655f95bcb43016e99e96e72.js",
+  "precache-manifest.6b15ffca0a8fa1a7c538f6284b45dbc0.js": "/precache-manifest.6b15ffca0a8fa1a7c538f6284b45dbc0.js",
   "service-worker.js": "/service-worker.js"
 }

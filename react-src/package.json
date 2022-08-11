@@ -19,8 +19,7 @@
     "start": "REACT_APP_API_URL=http://localhost:3000 PORT=4200 react-scripts start",
     "build": "BUILD_PATH='../public' react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "stop-linux": "killall node"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

@@ -207,8 +207,8 @@ class CustomTable extends PureComponent {
 		return (
 			<Table.Footer>
 				<Table.Row>
-					<Table.HeaderCell colSpan={labels.length}>
-						<Menu floated="right" pagination>
+					<Table.HeaderCell colSpan={labels.length+2}>
+						<Menu floated="left" pagination>
 							<Menu.Item as="a" icon onClick={() => this.handleFooter(page - 1)}>
 								<Icon name="chevron left" />
 							</Menu.Item>

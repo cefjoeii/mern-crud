@@ -1,4 +1,4 @@
-import React, { useEffect, Component } from 'react';
+import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -78,7 +78,7 @@ class App extends Component {
     if (peopleOnline < 1) {
       onlineText = 'No one else is online';
     } else {
-      onlineText = peopleOnline > 1 ? `${online - 1} people are online` : `${online - 1} person is online`;
+      onlineText = peopleOnline > 1 ? `${this.state.online - 1} people are online` : `${this.state.online - 1} person is online`;
     }
 
     return (

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const RateLimit = require('express-rate-limit');
+const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
 const stringCapitalizeName = require('string-capitalize-name');
 
@@ -8,7 +8,7 @@ const User = require('../models/user');
 
 // Attempt to limit spam post requests for inserting data
 const minutes = 5;
-const postLimiter = new RateLimit({
+const postLimiter = rateLimit({
   windowMs: minutes * 60 * 1000, // milliseconds
   max: 100, // Limit each IP to 100 requests per windowMs 
   delayMs: 0, // Disable delaying - full speed until the max limit is reached 

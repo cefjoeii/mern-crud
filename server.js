@@ -11,12 +11,7 @@ const config = require('./config/db');
 mongoose.Promise = global.Promise;
 
 // Connect to the database
-mongoose.connect(config.db, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify:false
-});
+mongoose.connect(config.db);
 
 let db = mongoose.connection;
 

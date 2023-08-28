@@ -9,7 +9,7 @@ REST API was implemented on the back-end. Semantic UI React was used for the UI 
 ![MongoDB Version](https://img.shields.io/badge/mongodb-v7+-yellowgreen.svg)
 ![Mongoose Version](https://img.shields.io/badge/mongoose-v7+-red.svg)
 
-Demo: [https://mern-crud-demo.vercel.app](https://mern-crud-demo.vercel.app)
+Demo: [https://mern-crud-mpfr.onrender.com](https://mern-crud-mpfr.onrender.com)
 
 ![MERN CRUD Screenshot](screenshot.png)
 

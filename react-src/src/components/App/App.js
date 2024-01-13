@@ -15,7 +15,7 @@ class App extends Component {
     super();
 
     this.server = process.env.REACT_APP_API_URL || '';
-    this.socket = io.connect(this.server);
+    this.socket = io(this.server);
 
     this.state = {
       users: [],

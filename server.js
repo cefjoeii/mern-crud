@@ -5,7 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
 
-const config = require('./config/db');
+const config = require('./config/configs');
 
 // Use Node's default promise instead of Mongoose's promise library
 mongoose.Promise = global.Promise;
@@ -54,13 +54,16 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const port = process.env.PORT || 3000;
-
 const server = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
 // Set up socket.io
-const io = socket(server);
+const io = socket(server,{
+  cors:{
+    origin: config.react_app_url,
+  }
+});
 let online = 0;
 
 io.on('connection', (socket) => {

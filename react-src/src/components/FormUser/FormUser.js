@@ -62,6 +62,15 @@ class FormUser extends Component {
     // Prevent browser refresh
     e.preventDefault();
 
+    // Client-side validation: Check if any of the fields are empty
+    if (!this.state.name || !this.state.email || !this.state.age || !this.state.gender) {
+      this.setState({
+        formClassName: 'warning',
+        formErrorMessage: 'Please fill out all fields: Name, Email, Age, and Gender.'
+      });
+      return; // Stop further execution
+    }
+
     const user = {
       name: this.state.name,
       email: this.state.email,
@@ -129,7 +138,7 @@ class FormUser extends Component {
     return (
       <Form className={formClassName} onSubmit={this.handleSubmit}>
         <Form.Input
-          label='Name'
+          label='Name *'
           type='text'
           placeholder='Elon Musk'
           name='name'
@@ -139,7 +148,7 @@ class FormUser extends Component {
           onChange={this.handleInputChange}
         />
         <Form.Input
-          label='Email'
+          label='Email *'
           type='email'
           placeholder='elonmusk@tesla.com'
           name='email'
@@ -150,7 +159,7 @@ class FormUser extends Component {
         />
         <Form.Group widths='equal'>
           <Form.Input
-            label='Age'
+            label='Age *'
             type='number'
             placeholder='18'
             min={5}
@@ -161,7 +170,7 @@ class FormUser extends Component {
           />
           <Form.Field
             control={Select}
-            label='Gender'
+            label='Gender *'
             options={genderOptions}
             placeholder='Gender'
             value={this.state.gender}

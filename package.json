@@ -21,12 +21,12 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "express-rate-limit": "^6.9.0",
     "mongoose": "^7.5.0",
     "mongoose-unique-validator": "^4.0.0",
     "mongoose-validator": "^2.1.0",
-    "socket.io": "^4.7.2",
+    "socket.io": "^4.8.0",
     "string-capitalize-name": "^1.0.3"
   }
 }

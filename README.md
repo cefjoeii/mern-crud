@@ -26,10 +26,11 @@ Fork, then download or clone the repo.
 git clone https://github.com/<your-user-name>/mern-crud.git
 ```
 
-The *config* folder contains a file named *db.js*. Before running locally, change the value of `db` as seen in the code below. *Make sure MongoDB service is running.*
+The *config* folder contains a file named *config.js*. Before running locally, change the value of `db` as seen in the code below. *Make sure MongoDB service is running.*
 ```js
 module.exports = {
-  db: 'mongodb://localhost/mern-crud'
+  db: "mongodb://localhost/mern-crud",
+  react_app_url: "http://localhost:4200"
 };
 ```
 

@@ -1,194 +1,166 @@
 const express = require('express');
-const router = express.Router();
 const rateLimit = require('express-rate-limit');
-const mongoose = require('mongoose');
 const stringCapitalizeName = require('string-capitalize-name');
-
 const User = require('../models/user');
 
-// Attempt to limit spam post requests for inserting data
-const minutes = 5;
+const router = express.Router();
+
+// Rate limiter for POST requests
 const postLimiter = rateLimit({
-  windowMs: minutes * 60 * 1000, // milliseconds
-  max: 100, // Limit each IP to 100 requests per windowMs 
-  delayMs: 0, // Disable delaying - full speed until the max limit is reached 
+  windowMs: 5 * 60 * 1000,
+  max: 100,
   handler: (req, res) => {
-    res.status(429).json({ success: false, msg: `You made too many requests. Please try again after ${minutes} minutes.` });
+    res.status(429).json({ 
+      success: false, 
+      msg: 'Too many requests. Please try again in 5 minutes.' 
+    });
   }
 });
 
-// READ (ONE)
-router.get('/:id', (req, res) => {
-  User.findById(req.params.id)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      res.status(404).json({ success: false, msg: `No such user.` });
+// Sanitization functions
+const sanitizers = {
+  name: (name) => stringCapitalizeName(name),
+  email: (email) => email.toLowerCase(),
+  age: (age) => {
+    if (age === '') return '';
+    if (isNaN(age)) return '';
+    return parseInt(age);
+  },
+  gender: (gender) => (gender === 'm' || gender === 'f') ? gender : ''
+};
+
+// Validation helper
+const validateAge = (age) => {
+  if (age === '') return null;
+  if (age < 5) return 'You\'re too young for this.';
+  if (age > 130) return 'You\'re too old for this.';
+  return null;
+};
+
+// Error handler for validation errors
+const handleValidationError = (err, res) => {
+  if (err.errors) {
+    const field = Object.keys(err.errors)[0];
+    return res.status(400).json({ 
+      success: false, 
+      msg: err.errors[field].message 
     });
+  }
+  res.status(500).json({ success: false, msg: 'Something went wrong.' });
+};
+
+// Format user response
+const formatUser = (user) => ({
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  age: user.age,
+  gender: user.gender
 });
 
-// READ (ALL)
-router.get('/', (req, res) => {
-  User.find({})
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-    });
+// Sanitize request body
+const sanitizeUser = (body) => ({
+  name: sanitizers.name(body.name || ''),
+  email: sanitizers.email(body.email || ''),
+  age: sanitizers.age(body.age),
+  gender: sanitizers.gender(body.gender || '')
 });
 
-// CREATE
-router.post('/', postLimiter, (req, res) => {
-
-  // Validate the age
-  let age = sanitizeAge(req.body.age);
-  if (age < 5 && age != '') return res.status(403).json({ success: false, msg: `You're too young for this.` });
-  else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
-
-  let newUser = new User({
-    name: sanitizeName(req.body.name),
-    email: sanitizeEmail(req.body.email),
-    age: sanitizeAge(req.body.age),
-    gender: sanitizeGender(req.body.gender)
-  });
-
-  newUser.save()
-    .then((result) => {
-      res.json({
-        success: true,
-        msg: `Successfully added!`,
-        result: {
-          _id: result._id,
-          name: result.name,
-          email: result.email,
-          age: result.age,
-          gender: result.gender
-        }
-      });
-    })
-    .catch((err) => {
-      if (err.errors) {
-        if (err.errors.name) {
-          res.status(400).json({ success: false, msg: err.errors.name.message });
-          return;
-        }
-        if (err.errors.email) {
-          res.status(400).json({ success: false, msg: err.errors.email.message });
-          return;
-        }
-        if (err.errors.age) {
-          res.status(400).json({ success: false, msg: err.errors.age.message });
-          return;
-        }
-        if (err.errors.gender) {
-          res.status(400).json({ success: false, msg: err.errors.gender.message });
-          return;
-        }
-        // Show failed if all else fails for some reasons
-        res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-      }
-    });
+// GET single user
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, msg: 'User not found.' });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(404).json({ success: false, msg: 'User not found.' });
+  }
 });
 
-// UPDATE
-router.put('/:id', (req, res) => {
-
-  // Validate the age
-  let age = sanitizeAge(req.body.age);
-  if (age < 5 && age != '') return res.status(403).json({ success: false, msg: `You're too young for this.` });
-  else if (age > 130 && age != '') return res.status(403).json({ success: false, msg: `You're too old for this.` });
-
-  let updatedUser = {
-    name: sanitizeName(req.body.name),
-    email: sanitizeEmail(req.body.email),
-    age: sanitizeAge(req.body.age),
-    gender: sanitizeGender(req.body.gender)
-  };
-
-  User.findOneAndUpdate({ _id: req.params.id }, updatedUser, { runValidators: true, context: 'query' })
-    .then((oldResult) => {
-      User.findOne({ _id: req.params.id })
-        .then((newResult) => {
-          res.json({
-            success: true,
-            msg: `Successfully updated!`,
-            result: {
-              _id: newResult._id,
-              name: newResult.name,
-              email: newResult.email,
-              age: newResult.age,
-              gender: newResult.gender
-            }
-          });
-        })
-        .catch((err) => {
-          res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-          return;
-        });
-    })
-    .catch((err) => {
-      if (err.errors) {
-        if (err.errors.name) {
-          res.status(400).json({ success: false, msg: err.errors.name.message });
-          return;
-        }
-        if (err.errors.email) {
-          res.status(400).json({ success: false, msg: err.errors.email.message });
-          return;
-        }
-        if (err.errors.age) {
-          res.status(400).json({ success: false, msg: err.errors.age.message });
-          return;
-        }
-        if (err.errors.gender) {
-          res.status(400).json({ success: false, msg: err.errors.gender.message });
-          return;
-        }
-        // Show failed if all else fails for some reasons
-        res.status(500).json({ success: false, msg: `Something went wrong. ${err}` });
-      }
-    });
+// GET all users
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ success: false, msg: 'Something went wrong.' });
+  }
 });
 
-// DELETE
-router.delete('/:id', (req, res) => {
+// CREATE user
+router.post('/', postLimiter, async (req, res) => {
+  try {
+    const sanitized = sanitizeUser(req.body);
+    
+    // Validate age
+    const ageError = validateAge(sanitized.age);
+    if (ageError) {
+      return res.status(403).json({ success: false, msg: ageError });
+    }
 
-  User.findByIdAndRemove(req.params.id)
-    .then((result) => {
-      res.json({
-        success: true,
-        msg: `It has been deleted.`,
-        result: {
-          _id: result._id,
-          name: result.name,
-          email: result.email,
-          age: result.age,
-          gender: result.gender
-        }
-      });
-    })
-    .catch((err) => {
-      res.status(404).json({ success: false, msg: 'Nothing to delete.' });
+    const newUser = new User(sanitized);
+    const result = await newUser.save();
+
+    res.status(201).json({
+      success: true,
+      msg: 'Successfully added!',
+      result: formatUser(result)
     });
+  } catch (err) {
+    handleValidationError(err, res);
+  }
+});
+
+// UPDATE user
+router.put('/:id', async (req, res) => {
+  try {
+    const sanitized = sanitizeUser(req.body);
+    
+    // Validate age
+    const ageError = validateAge(sanitized.age);
+    if (ageError) {
+      return res.status(403).json({ success: false, msg: ageError });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      sanitized,
+      { runValidators: true, context: 'query', new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, msg: 'User not found.' });
+    }
+
+    res.json({
+      success: true,
+      msg: 'Successfully updated!',
+      result: formatUser(user)
+    });
+  } catch (err) {
+    handleValidationError(err, res);
+  }
+});
+
+// DELETE user
+router.delete('/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, msg: 'User not found.' });
+    }
+
+    res.json({
+      success: true,
+      msg: 'Successfully deleted!',
+      result: formatUser(user)
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, msg: 'Something went wrong.' });
+  }
 });
 
 module.exports = router;
-
-// Minor sanitizing to be invoked before reaching the database
-sanitizeName = (name) => {
-  return stringCapitalizeName(name);
-}
-sanitizeEmail = (email) => {
-  return email.toLowerCase();
-}
-sanitizeAge = (age) => {
-  // Return empty if age is non-numeric
-  if (isNaN(age) && age != '') return '';
-  return (age === '') ? age : parseInt(age);
-}
-sanitizeGender = (gender) => {
-  // Return empty if it's neither of the two
-  return (gender === 'm' || gender === 'f') ? gender : '';
-}

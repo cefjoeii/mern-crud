@@ -21,7 +21,7 @@
   "dependencies": {
     "body-parser": "1.17.2",
     "cors": "2.8.4",
-    "express": "4.15.3",
+    "express": "4.22.0",
     "express-rate-limit": "2.9.0",
     "mongoose": "6.13.10",
     "mongoose-unique-validator": "1.0.5",

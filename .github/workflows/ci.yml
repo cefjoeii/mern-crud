@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.adminCommand(\"ping\")'" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env for CI
+        run: |
+          echo "DB=mongodb://127.0.0.1:27017/mern-crud-test" > .env
+          echo "PORT=3000" >> .env
+          echo "NODE_ENV=test" >> .env
+
+      - name: Start server
+        run: |
+          npm start &
+          # wait for server to respond on port 3000 (up to ~60s)
+          for i in {1..30}; do
+            if curl -sS http://127.0.0.1:3000 >/dev/null 2>&1; then
+              echo "Server is up"; break
+            fi
+            echo "Waiting for server... ($i)"; sleep 2
+          done
+
+      - name: Run tests
+        env:
+          SERVER: http://127.0.0.1:3000
+        run: npm test

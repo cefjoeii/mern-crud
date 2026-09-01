@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mongo:
-        image: mongo:6.0
+      image: mongo:latest
 
     steps:
       - name: Checkout

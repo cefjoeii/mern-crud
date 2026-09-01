@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 'stable'
 
       - name: Install dependencies
         run: npm ci
@@ -32,11 +32,11 @@ jobs:
       - name: Wait for MongoDB service
         run: |
           echo "Waiting for MongoDB on mongo:27017"
-          for i in {1..60}; do
+          for i in {1..15}; do
             if bash -c "</dev/tcp/mongo/27017" >/dev/null 2>&1; then
               echo "Mongo is reachable"; exit 0
             fi
-            echo "Waiting for MongoDB... ($i)"; sleep 2
+            echo "Waiting for MongoDB... ($i)"; sleep 1
           done
           echo "Timed out waiting for MongoDB; continuing without failing the job"
 

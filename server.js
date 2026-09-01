@@ -13,79 +13,97 @@ const config = require('./config/configs');
 mongoose.Promise = global.Promise;
 
 // Connect to the database
-mongoose.connect(config.db);
+mongoose.connect(config.db, { maxPoolSize: 10 });
 
 let db = mongoose.connection;
 
-db.on('open', () => {
-  console.log('Connected to the database.');
-});
-
-db.on('error', (err) => {
-  console.log(`Database error: ${err}`);
-});
-
-// Instantiate express
+// Instantiate express (routes and middlewares will be registered when DB is ready)
 const app = express();
 
-// Don't enable trust proxy unless explicitly configured. When running behind a
-// reverse proxy that sets X-Forwarded-For, set TRUST_PROXY=true in the env.
-// See: https://github.com/nfriedly/express-rate-limit
+// Don't enable trust proxy unless explicitly configured.
 if (process.env.TRUST_PROXY === 'true') {
   app.enable('trust proxy');
 } else {
   app.disable('trust proxy');
 }
 
-// Set public folder using built-in express.static middleware
+// Common middleware
 app.use(express.static('public'));
-
-// Set body parser middleware
 app.use(bodyParser.json());
-
-// Enable cross-origin access through the CORS middleware
-// NOTICE: For React development server only!
 if (process.env.CORS) {
   app.use(cors());
 }
 
-// Initialize routes middleware
-app.use('/api/users', require('./routes/users'));
-
-// Use express's default error handling middleware
+// Error handler
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
   res.status(400).json({ err: err });
 });
 
-// Start the server
+// Function to register routes after DB is connected
+function registerRoutes() {
+  // Initialize routes middleware
+  app.use('/api/users', require('./routes/users'));
+}
+
+// Start server after DB connection is established
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+let serverStarted = false;
 
-// Set up socket.io
-const io = socket(server,{
-  cors:{
-    origin: config.react_app_url,
-  }
-});
-let online = 0;
+function startServer() {
+  if (serverStarted) return;
+  serverStarted = true;
 
-io.on('connection', (socket) => {
-  online++;
-  console.log(`Socket ${socket.id} connected.`);
-  console.log(`Online: ${online}`);
-  io.emit('visitor enters', online);
+  registerRoutes();
 
-  socket.on('add', data => socket.broadcast.emit('add', data));
-  socket.on('update', data => socket.broadcast.emit('update', data));
-  socket.on('delete', data => socket.broadcast.emit('delete', data));
-
-  socket.on('disconnect', () => {
-    online--;
-    console.log(`Socket ${socket.id} disconnected.`);
-    console.log(`Online: ${online}`);
-    io.emit('visitor exits', online);
+  const server = app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
   });
+
+  const io = socket(server,{
+    cors:{
+      origin: config.react_app_url,
+    }
+  });
+
+  let online = 0;
+  io.on('connection', (s) => {
+    online++;
+    console.log(`Socket ${s.id} connected.`);
+    io.emit('visitor enters', online);
+
+    s.on('add', data => s.broadcast.emit('add', data));
+    s.on('update', data => s.broadcast.emit('update', data));
+    s.on('delete', data => s.broadcast.emit('delete', data));
+
+    s.on('disconnect', () => {
+      online--;
+      console.log(`Socket ${s.id} disconnected.`);
+      io.emit('visitor exits', online);
+    });
+  });
+}
+
+// DB event handlers
+let dbOpened = false;
+db.on('open', () => {
+  dbOpened = true;
+  console.log('Connected to the database.');
+  try { startServer(); } catch (e) { console.error('Error starting server after DB open', e); }
 });
+
+db.on('error', (err) => {
+  console.log(`Database error: ${err}`);
+});
+
+// Fallback: if DB doesn't open within a configurable timeout in CI, start server anyway
+const DB_WAIT_OVERRIDE = process.env.DB_WAIT_OVERRIDE || 'false';
+if (DB_WAIT_OVERRIDE === 'true') {
+  const WAIT_MS = parseInt(process.env.DB_WAIT_MS || '15000', 10);
+  setTimeout(() => {
+    if (!dbOpened) {
+      console.warn(`DB did not open within ${WAIT_MS}ms, starting server anyway due to DB_WAIT_OVERRIDE`);
+      startServer();
+    }
+  }, WAIT_MS);
+}

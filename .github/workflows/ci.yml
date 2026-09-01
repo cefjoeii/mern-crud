@@ -32,13 +32,13 @@ jobs:
       - name: Wait for MongoDB service
         run: |
           echo "Waiting for MongoDB on mongo:27017"
-          for i in {1..30}; do
-            # bash /dev/tcp check
+          for i in {1..60}; do
             if bash -c "</dev/tcp/mongo/27017" >/dev/null 2>&1; then
-              echo "Mongo is reachable"; break
+              echo "Mongo is reachable"; exit 0
             fi
             echo "Waiting for MongoDB... ($i)"; sleep 2
           done
+          echo "Timed out waiting for MongoDB"; exit 1
 
       - name: Start server
         run: |

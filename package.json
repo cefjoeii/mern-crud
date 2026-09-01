@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/cefjoeii/mern-crud#readme",
   "dependencies": {
-    "body-parser": "^1.20.4",
+    "body-parser": "^1.20.6",
     "cors": "^2.8.5",
     "express": "^4.22.1",
     "express-rate-limit": "^6.9.0",

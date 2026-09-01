@@ -23,7 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.22.1",
     "express-rate-limit": "^6.9.0",
-    "mongoose": "^8.9.5",
+    "mongoose": "^8.24.4",
     "mongoose-unique-validator": "^5.0.1",
     "mongoose-validator": "^2.1.0",
     "socket.io": "^4.8.0",

@@ -26,10 +26,14 @@ db.on('error', (err) => {
 // Instantiate express
 const app = express();
 
-// Don't touch this if you don't know it
-// We are using this for the express-rate-limit middleware
+// Don't enable trust proxy unless explicitly configured. When running behind a
+// reverse proxy that sets X-Forwarded-For, set TRUST_PROXY=true in the env.
 // See: https://github.com/nfriedly/express-rate-limit
-app.enable('trust proxy');
+if (process.env.TRUST_PROXY === 'true') {
+  app.enable('trust proxy');
+} else {
+  app.disable('trust proxy');
+}
 
 // Set public folder using built-in express.static middleware
 app.use(express.static('public'));

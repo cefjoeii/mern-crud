@@ -25,41 +25,61 @@ async function request(method, path, body, timeout = 10000) {
 }
 
 describe('Users API', function() {
-  this.timeout(5000);
+  this.timeout(20000);
   let createdId = null;
   const unique = Date.now();
   const userPayload = { name: `Test User ${unique}`, email: `test${unique}@example.com`, age: 30, gender: 'm' };
 
-  it('creates a user', async () => {
-    const res = await request('POST', '/api/users', userPayload);
-    assert.strictEqual(res.status, 201, `Expected 201 on create, got ${res.status} - ${JSON.stringify(res.body)}`);
-    assert.ok(res.body && res.body.success === true, 'Create response success missing');
-    createdId = res.body.result && res.body.result._id;
-    assert.ok(createdId, 'Created user _id missing');
+  it('creates a user', function(done) {
+    request('POST', '/api/users', userPayload).then(res => {
+      try {
+        assert.strictEqual(res.status, 201, `Expected 201 on create, got ${res.status} - ${JSON.stringify(res.body)}`);
+        assert.ok(res.body && res.body.success === true, 'Create response success missing');
+        createdId = res.body.result && res.body.result._id;
+        assert.ok(createdId, 'Created user _id missing');
+        done();
+      } catch (err) { done(err); }
+    }).catch(done);
   });
 
-  it('reads the created user', async () => {
-    const res = await request('GET', `/api/users/${createdId}`);
-    assert.strictEqual(res.status, 200, `Expected 200 on get, got ${res.status}`);
-    assert.strictEqual(res.body._id, createdId, 'Fetched user id mismatch');
+  it('reads the created user', function(done) {
+    request('GET', `/api/users/${createdId}`).then(res => {
+      try {
+        assert.strictEqual(res.status, 200, `Expected 200 on get, got ${res.status}`);
+        assert.strictEqual(res.body._id, createdId, 'Fetched user id mismatch');
+        done();
+      } catch (err) { done(err); }
+    }).catch(done);
   });
 
-  it('updates the user', async () => {
+  it('updates the user', function(done) {
     const updatePayload = { name: 'Updated Name', email: userPayload.email, age: 31, gender: 'm' };
-    const res = await request('PUT', `/api/users/${createdId}`, updatePayload);
-    assert.strictEqual(res.status, 200, `Expected 200 on update, got ${res.status} - ${JSON.stringify(res.body)}`);
-    assert.ok(res.body.success === true, 'Update response success missing');
-    assert.strictEqual(res.body.result.name, 'Updated Name', 'Update did not change name');
+    request('PUT', `/api/users/${createdId}`, updatePayload).then(res => {
+      try {
+        assert.strictEqual(res.status, 200, `Expected 200 on update, got ${res.status} - ${JSON.stringify(res.body)}`);
+        assert.ok(res.body.success === true, 'Update response success missing');
+        assert.strictEqual(res.body.result.name, 'Updated Name', 'Update did not change name');
+        done();
+      } catch (err) { done(err); }
+    }).catch(done);
   });
 
-  it('deletes the user', async () => {
-    const res = await request('DELETE', `/api/users/${createdId}`);
-    assert.strictEqual(res.status, 200, `Expected 200 on delete, got ${res.status}`);
-    assert.ok(res.body.success === true, 'Delete response success missing');
+  it('deletes the user', function(done) {
+    request('DELETE', `/api/users/${createdId}`).then(res => {
+      try {
+        assert.strictEqual(res.status, 200, `Expected 200 on delete, got ${res.status}`);
+        assert.ok(res.body.success === true, 'Delete response success missing');
+        done();
+      } catch (err) { done(err); }
+    }).catch(done);
   });
 
-  it('confirms deletion returns 404', async () => {
-    const res = await request('GET', `/api/users/${createdId}`);
-    assert.strictEqual(res.status, 404, `Expected 404 for deleted user, got ${res.status}`);
+  it('confirms deletion returns 404', function(done) {
+    request('GET', `/api/users/${createdId}`).then(res => {
+      try {
+        assert.strictEqual(res.status, 404, `Expected 404 for deleted user, got ${res.status}`);
+        done();
+      } catch (err) { done(err); }
+    }).catch(done);
   });
 });

@@ -4,10 +4,6 @@ A simple records system using MongoDB, Express.js, React.js, and Node.js with re
 
 REST API was implemented on the back-end. Semantic UI React was used for the UI in the front-end.
 
-![Node Version](https://img.shields.io/badge/node-v20+-green.svg)
-![NPM Version](https://img.shields.io/badge/npm-v9+-blue.svg)
-![MongoDB Version](https://img.shields.io/badge/mongodb-v7+-yellowgreen.svg)
-![Mongoose Version](https://img.shields.io/badge/mongoose-v7+-red.svg)
 
 Demo: [https://mern-crud-mpfr.onrender.com](https://mern-crud-mpfr.onrender.com)
 
@@ -26,13 +22,14 @@ Fork, then download or clone the repo.
 git clone https://github.com/<your-user-name>/mern-crud.git
 ```
 
-The *config* folder contains a file named *config.js*. Before running locally, change the value of `db` as seen in the code below. *Make sure MongoDB service is running.*
+<!-- The *config* folder contains a file named *config.js*. Before running locally, change the value of `db` as seen in the code below. *Make sure MongoDB service is running.*
 ```js
 module.exports = {
-  db: "mongodb://localhost/mern-crud",
+  db: process.env.DB,
   react_app_url: "http://localhost:4200"
 };
-```
+```-->
+
 
 ## Back-end
 Install the dependencies via the terminal.
@@ -40,9 +37,17 @@ Install the dependencies via the terminal.
 npm install
 ```
 
-Run the *main server*.
+Create a `.env.local` file with values like:
+
+```env
+DB=mongodb://localhost/mern-crud
+PORT=3000
+CORS=1
+```
+
+Run the *server*.
 ```bash
-CORS=1 node server
+node server
 ```
 View [http://localhost:3000](http://localhost:3000) on the browser.
 
@@ -58,9 +63,15 @@ Install the dependencies required by React.
 npm install
 ```
 
+Create a `.env.local` file with values like:
+
+```env
+REACT_APP_API_URL=http://localhost:3000
+```
+
 Run the *development server* for React.
 ```bash
-REACT_APP_API_URL=http://localhost:3000 npm start
+npm start
 ```
 
 View [http://localhost:4200](http://localhost:4200) on the browser.
@@ -89,6 +100,7 @@ Feel free to help out as I may have other work/life commitments. See [CONTRIBUTI
 - [x] Real-time broadcast using Socket.io
 - [x] Deploy in Heroku
 - [x] Front-end validation (HTML)
+- [x] Unit Tests
 
 ## License
 **MERN CRUD** is available under the **MIT** license. See the [LICENSE](LICENSE) file for more info.

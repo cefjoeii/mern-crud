@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node --env-file='.env' server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*.js --exit"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,8 @@
     "mongoose-validator": "^2.1.0",
     "socket.io": "^4.8.0",
     "string-capitalize-name": "^1.0.3"
+  },
+  "devDependencies": {
+    "mocha": "^12.0.0"
   }
 }

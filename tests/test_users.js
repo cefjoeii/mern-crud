@@ -3,17 +3,25 @@ const assert = require('assert');
 // Node 18+ provides global fetch. Adjust BASE if your server runs elsewhere.
 const BASE = process.env.SERVER || 'http://127.0.0.1:3000';
 
-async function request(method, path, body) {
+async function request(method, path, body, timeout = 10000) {
   const opts = { method, headers: {} };
   if (body) {
     opts.headers['Content-Type'] = 'application/json';
     opts.body = JSON.stringify(body);
   }
-  const res = await fetch(`${BASE}${path}`, opts);
-  const text = await res.text();
-  let json = null;
-  try { json = JSON.parse(text); } catch (e) { json = text; }
-  return { status: res.status, body: json };
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const res = await fetch(`${BASE}${path}`, { ...opts, signal: controller.signal });
+    clearTimeout(id);
+    const text = await res.text();
+    let json = null;
+    try { json = JSON.parse(text); } catch (e) { json = text; }
+    return { status: res.status, body: json };
+  } catch (err) {
+    clearTimeout(id);
+    return { status: 0, body: { error: err && err.message ? err.message : String(err) } };
+  }
 }
 
 describe('Users API', function() {

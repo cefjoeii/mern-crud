@@ -1,4 +1,6 @@
 const express = require('express');
+// Load environment variables from .env into process.env when present (CI and local dev)
+try { require('dotenv').config(); } catch (e) { /* dotenv not installed */ }
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');

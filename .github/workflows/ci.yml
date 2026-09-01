@@ -29,6 +29,17 @@ jobs:
           echo "PORT=3000" >> .env
           echo "NODE_ENV=test" >> .env
 
+      - name: Wait for MongoDB service
+        run: |
+          echo "Waiting for MongoDB on mongo:27017"
+          for i in {1..30}; do
+            # bash /dev/tcp check
+            if bash -c "</dev/tcp/mongo/27017" >/dev/null 2>&1; then
+              echo "Mongo is reachable"; break
+            fi
+            echo "Waiting for MongoDB... ($i)"; sleep 2
+          done
+
       - name: Start server
         run: |
           npm start &

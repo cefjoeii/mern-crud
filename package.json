@@ -30,6 +30,6 @@
     "string-capitalize-name": "^1.0.3"
   },
   "devDependencies": {
-    "mocha": "^12.0.0"
+    "mocha": "^9.2.2"
   }
 }

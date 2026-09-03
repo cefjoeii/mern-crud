@@ -1,7 +1,6 @@
-// Set the connection string based from the config vars of the production server
-// To run locally use 'mongodb://localhost/mern-crud' instead of process.env.DB
+// Use the configured database in production and the local database by default.
 
 module.exports = {
-  db: process.env.DB,
+  db: process.env.DB || 'mongodb://localhost/mern-crud',
   react_app_url: "http://localhost:4200"
 };

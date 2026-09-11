@@ -138,7 +138,7 @@ class FormUser extends Component {
     return (
       <Form className={formClassName} onSubmit={this.handleSubmit}>
         <Form.Input
-          label='Name *'
+          label='Name'
           type='text'
           placeholder='Elon Musk'
           name='name'
@@ -148,7 +148,7 @@ class FormUser extends Component {
           onChange={this.handleInputChange}
         />
         <Form.Input
-          label='Email *'
+          label='Email'
           type='email'
           placeholder='elonmusk@tesla.com'
           name='email'
@@ -159,20 +159,22 @@ class FormUser extends Component {
         />
         <Form.Group widths='equal'>
           <Form.Input
-            label='Age *'
+            label='Age'
             type='number'
             placeholder='18'
             min={5}
             max={130}
             name='age'
+            required
             value={this.state.age}
             onChange={this.handleInputChange}
           />
           <Form.Field
             control={Select}
-            label='Gender *'
+            label='Gender'
             options={genderOptions}
             placeholder='Gender'
+            required
             value={this.state.gender}
             onChange={this.handleSelectChange}
           />

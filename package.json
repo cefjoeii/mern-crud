@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node --env-file='.env' server",
+    "start-no-env": "node server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,13 +21,13 @@
   "homepage": "https://github.com/cefjoeii/mern-crud#readme",
   "dependencies": {
     "body-parser": "^2.3.0",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
-    "express-rate-limit": "^6.9.0",
-    "mongoose": "^8.24.4",
-    "mongoose-unique-validator": "^5.0.1",
+    "express-rate-limit": "^8.7.0",
+    "mongoose": "^9.9.4",
+    "mongoose-unique-validator": "^6.1.1",
     "mongoose-validator": "^2.1.0",
-    "socket.io": "^4.8.0",
+    "socket.io": "^4.8.3",
     "string-capitalize-name": "^1.0.3"
   }
 }

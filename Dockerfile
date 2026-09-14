@@ -9,8 +9,10 @@ COPY package.json /usr/src/app/
 RUN npm install
 
 COPY react-src/package.json /usr/src/app/react-src
-RUN npm install
+RUN npm install --prefix /usr/src/app/react-src
 
 COPY . /usr/src/app
 
 EXPOSE 3000 4200
+
+CMD ["node", "server.js"]

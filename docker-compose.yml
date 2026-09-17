@@ -1,7 +1,6 @@
-version: '2'
 services:
   db:
-    image: mongo:latest
+    image: mongo:7.0
   api:
     build: .
     image: mern-crud

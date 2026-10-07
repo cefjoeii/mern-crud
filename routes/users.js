@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
 const stringCapitalizeName = require('string-capitalize-name');
 const User = require('../models/user');
@@ -69,6 +70,9 @@ const sanitizeUser = (body) => ({
 // GET single user
 router.get('/:id', async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ success: false, msg: 'User not found.' });
+    }
     const user = await User.findById(req.params.id);
     if (!user) {
       return res.status(404).json({ success: false, msg: 'User not found.' });
@@ -116,6 +120,10 @@ router.post('/', postLimiter, async (req, res) => {
 // UPDATE user
 router.put('/:id', async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ success: false, msg: 'User not found.' });
+    }
+
     const sanitized = sanitizeUser(req.body);
     
     // Validate age

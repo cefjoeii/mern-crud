@@ -4,16 +4,15 @@
   "description": "A simple records system using MongoDB, Express.js, React.js, and Node.js with real-time CRUD operations using Socket.io",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file='.env' server",
-    "start-no-env": "node server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsx --env-file=.env server",
+    "typecheck": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cefjoeii/mern-crud.git"
   },
   "keywords": [],
-  "author": "Ceferino Jose II",
+  "author": "Andrii Ielagin",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cefjoeii/mern-crud/issues"
@@ -29,5 +28,11 @@
     "mongoose-validator": "^2.1.0",
     "socket.io": "^4.8.3",
     "string-capitalize-name": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

@@ -1,0 +1,18 @@
+name: Typecheck
+
+on:
+  push:
+    branches: [main, ts-migration]
+  pull_request:
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc # CI follows your pinned Node 26
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck

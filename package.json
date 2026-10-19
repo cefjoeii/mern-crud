@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "tsx --env-file=.env server",
-    "typecheck": "tsc"
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

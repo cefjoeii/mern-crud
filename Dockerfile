@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:26
 
 RUN mkdir -p /usr/src/app/react-src
 WORKDIR /usr/src/app

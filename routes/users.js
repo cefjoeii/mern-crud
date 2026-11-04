@@ -6,6 +6,14 @@ const User = require('../models/user');
 
 const router = express.Router();
 
+// Reject malformed ids before they reach Mongoose (GET/PUT/DELETE /:id)
+router.param('id', (req, res, next, id) => {
+  if (!mongoose.isObjectIdOrHexString(id)) {
+    return res.status(400).json({ success: false, msg: 'Invalid user ID.' });
+  }
+  next();
+});
+
 // Rate limiter for POST requests
 const postLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -70,9 +78,6 @@ const sanitizeUser = (body) => ({
 // GET single user
 router.get('/:id', async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(404).json({ success: false, msg: 'User not found.' });
-    }
     const user = await User.findById(req.params.id);
     if (!user) {
       return res.status(404).json({ success: false, msg: 'User not found.' });
@@ -120,10 +125,6 @@ router.post('/', postLimiter, async (req, res) => {
 // UPDATE user
 router.put('/:id', async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(404).json({ success: false, msg: 'User not found.' });
-    }
-
     const sanitized = sanitizeUser(req.body);
     
     // Validate age

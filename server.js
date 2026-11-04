@@ -49,7 +49,11 @@ app.use('/api/users', require('./routes/users'));
 // Use express's default error handling middleware
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
-  res.status(400).json({ err: err });
+  const status = err.status || err.statusCode || 500;
+  res.status(status).json({
+    success: false,
+    msg: status < 500 ? err.message : 'Something went wrong.'
+  });
 });
 
 // Start the server

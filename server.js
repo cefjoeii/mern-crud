@@ -26,10 +26,15 @@ db.on('error', (err) => {
 // Instantiate express
 const app = express();
 
-// Don't touch this if you don't know it
-// We are using this for the express-rate-limit middleware
-// See: https://github.com/nfriedly/express-rate-limit
-app.enable('trust proxy');
+// express-rate-limit identifies clients by req.ip. Behind a reverse proxy
+// set TRUST_PROXY to the number of proxy hops (e.g. TRUST_PROXY=1) or to an
+// Express trust-proxy value such as 'loopback'. Do NOT use 'true': it trusts
+// any client-supplied X-Forwarded-For header and lets anyone bypass the limiter.
+// See: https://express-rate-limit.github.io/ERR_ERL_PERMISSIVE_TRUST_PROXY/
+const trustProxy = process.env.TRUST_PROXY;
+if (trustProxy) {
+  app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
+}
 
 // Set public folder using built-in express.static middleware
 app.use(express.static('public'));

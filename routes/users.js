@@ -1,9 +1,18 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
 const stringCapitalizeName = require('string-capitalize-name');
 const User = require('../models/user');
 
 const router = express.Router();
+
+// Reject malformed ids before they reach Mongoose (GET/PUT/DELETE /:id)
+router.param('id', (req, res, next, id) => {
+  if (!mongoose.isObjectIdOrHexString(id)) {
+    return res.status(400).json({ success: false, msg: 'Invalid user ID.' });
+  }
+  next();
+});
 
 // Rate limiter for POST requests
 const postLimiter = rateLimit({

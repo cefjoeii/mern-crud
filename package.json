@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node --env-file='.env' server",
     "start-no-env": "node server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test \"test/**/*.test.js\""
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,8 @@
     "mongoose-validator": "^2.1.0",
     "socket.io": "^4.8.3",
     "string-capitalize-name": "^1.0.3"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
   }
 }
